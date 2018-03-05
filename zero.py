@@ -68,14 +68,10 @@ def handle_message(event):
 			profile = line_bot_api.get_profile(event.source.user_id)
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(profile.picture_url + "\n"
-								+ profile.display_name))
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(profile.user_id))
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(profile.status_message))
+				TextSendMessage("Display name: " + profile.display_name + "\n" +
+								"Profile picture: " + profile.picture_url + "\n" +
+								"User_ID: " + profile.user_id + "\n" +
+								"Status Message: " + profile.status_message))
 		except LineBotApiError:
 			pass
 			
