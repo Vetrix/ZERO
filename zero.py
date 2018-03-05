@@ -50,13 +50,13 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('I am leaving the group...'))
-			MendoBot.leave_group(event.source.group_id)
+			line_bot_api.leave_group(event.source.group_id)
 		
 		elif isinstance(event.source, SourceRoom):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('I am leaving the group...'))
-			MendoBot.leave_room(event.source.room_id)
+			line_bot_api.leave_room(event.source.room_id)
 			
 		else:
 			line_bot_api.reply_message(
