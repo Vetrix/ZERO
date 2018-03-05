@@ -8,7 +8,7 @@ from linebot.exceptions import (
 	InvalidSignatureError
 )
 from linebot.models import (
-	MessageEvent, TextMessage, TextSendMessage,
+	MessageEvent, TextMessage, TextSendMessage, SourceGroup, SourceRoom
 )
 
 app = Flask(__name__)
@@ -45,6 +45,24 @@ def handle_message(event):
 			event.reply_token,
 			TextSendMessage('I will be here for you'))
 	
+	elif text == '/leave':
+		if isinstance(event.source, SourceGroup):
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('I am leaving the group...'))
+			MendoBot.leave_group(event.source.group_id)
+		
+		elif isinstance(event.source, SourceRoom):
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('I am leaving the group...'))
+			MendoBot.leave_room(event.source.room_id)
+			
+		else:
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('>_< cannot do...'))
+			
 	else:
 		line_bot_api.reply_message(
 			event.reply_token,
