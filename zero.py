@@ -62,6 +62,17 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('>_< cannot do...'))
+		
+	elif text == '/profile':
+		try:
+			profile = line_bot_api.get_profile('<user_id>')
+			print(profile.display_name)
+			print(profile.user_id)
+			print(profile.picture_url)
+			print(profile.status_message)
+		except LineBotApiError as e:
+			# error handle
+			pass
 			
 	else:
 		line_bot_api.reply_message(
