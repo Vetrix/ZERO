@@ -65,7 +65,7 @@ def handle_message(event):
 		
 	elif text == '/profile':
 		try:
-			profile = line_bot_api.get_profile('<user_id>')
+			profile = line_bot_api.get_profile(event.source.user_id)
 			print(profile.display_name)
 			print(profile.user_id)
 			print(profile.picture_url)
