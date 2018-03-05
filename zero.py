@@ -68,13 +68,13 @@ def handle_message(event):
 			profile = line_bot_api.get_profile(event.source.user_id)
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(profile.user_id))
+				TextSendMessage(profile.picture_url))
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(profile.display_name))
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(profile.picture_url))
+				TextSendMessage(profile.user_id))
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(profile.status_message))
