@@ -70,8 +70,7 @@ def handle_message(event):
 			print(profile.user_id)
 			print(profile.picture_url)
 			print(profile.status_message)
-		except LineBotApiError as e:
-			# error handle
+		except LineBotApiError:
 			pass
 			
 	else:
