@@ -41,8 +41,8 @@ def handle_message(event):
 	text=event.message.text
 	
 	def getprofile():
-		result = ("Display name: " + profile.display_name + "\n"
-				  "Profile picture: " + profile.picture_url)
+		result = ("Display name: " + subject.display_name + "\n"
+				  "Profile picture: " + subject.picture_url)
 		try:
 			profile = line_bot_api.get_profile(event.source.user_id)
 			if profile.status_message:
