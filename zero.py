@@ -64,16 +64,47 @@ def handle_message(event):
 				TextSendMessage('>_< cannot do...'))
 		
 	elif text == '/profile':
-		try:
-			profile = line_bot_api.get_profile(event.source.user_id)
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("Display name: " + profile.display_name + "\n" +
-								"Profile picture: " + profile.picture_url + "\n" +
-								"User_ID: " + profile.user_id + "\n" +
-								"Status Message: " + profile.status_message))
-		except LineBotApiError:
-			pass
+		if isinstance(event.source, SourceGroup):
+			try:
+				profile = line_bot_api.get_group_member_profile(event.source.group_id, event.source.user_id)
+				result = ("Display name: " + profile.display_name + "\n" +
+						  "Profile picture: " + profile.picture_url + "\n" +
+						  "User_ID: " + profile.user_id)
+				if profile.status_message:
+					result += "\n" + "Status message: " + profile.status_message
+				line_bot_api.reply_message(
+					event.reply_token,
+					TextSendMessage(result))
+			except LineBotApiError:
+				pass
+		
+		elif isinstance(event.source, SourceRoom):
+			try:
+				profile = line_bot_api.get_room_member_profile(event.source.room_id, event.source.user_id)
+				result = ("Display name: " + profile.display_name + "\n" +
+						  "Profile picture: " + profile.picture_url + "\n" +
+						  "User_ID: " + profile.user_id)
+				if profile.status_message:
+					result += "\n" + "Status message: " + profile.status_message
+				line_bot_api.reply_message(
+					event.reply_token,
+					TextSendMessage(result))
+			except LineBotApiError:
+				pass
+				
+		else:
+			try:
+				profile = line_bot_api.get_profile(event.source.user_id)
+				result = ("Display name: " + profile.display_name + "\n" +
+						  "Profile picture: " + profile.picture_url + "\n" +
+						  "User_ID: " + profile.user_id)
+				if profile.status_message:
+					result += "\n" + "Status message: " + profile.status_message
+				line_bot_api.reply_message(
+					event.reply_token,
+					TextSendMessage(result))
+			except LineBotApiError:
+				pass
 			
 	else:
 		line_bot_api.reply_message(
