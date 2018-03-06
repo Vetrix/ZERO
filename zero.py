@@ -70,6 +70,12 @@ def handle_message(event):
 								"Nice to meet you... \n"
 								"source code: https://github.com/Vetrix/ZERO"))
 	
+	elif text == '/search image':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Try this up \n"
+								"https://reverse.photos/"))
+	
 	elif text == '/profile':
 		if isinstance(event.source, SourceGroup):
 			try:
