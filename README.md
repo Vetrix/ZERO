@@ -1,3 +1,3 @@
 # ZERO
 
-zero of my bot
+zero bot, to help me do things up
