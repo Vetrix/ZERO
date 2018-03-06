@@ -62,7 +62,14 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('>_< cannot do...'))
-		
+	
+	elif text == '/about':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Hello, my name is Reika \n"
+								"Nice to meet you... \n"
+								"source code: https://github.com/Vetrix/ZERO"))
+	
 	elif text == '/profile':
 		if isinstance(event.source, SourceGroup):
 			try:
@@ -70,13 +77,12 @@ def handle_message(event):
 				result = ("Display name: " + profile.display_name + "\n" +
 						  "Profile picture: " + profile.picture_url + "\n" +
 						  "User_ID: " + profile.user_id)
-				if profile.status_message:
-					result += "\n" + "Status message: " + profile.status_message
-				line_bot_api.reply_message(
-					event.reply_token,
-					TextSendMessage(result))
 			except LineBotApiError:
-				pass
+				pass	
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(result))
+			
 		
 		elif isinstance(event.source, SourceRoom):
 			try:
@@ -84,13 +90,12 @@ def handle_message(event):
 				result = ("Display name: " + profile.display_name + "\n" +
 						  "Profile picture: " + profile.picture_url + "\n" +
 						  "User_ID: " + profile.user_id)
-				if profile.status_message:
-					result += "\n" + "Status message: " + profile.status_message
-				line_bot_api.reply_message(
-					event.reply_token,
-					TextSendMessage(result))
 			except LineBotApiError:
-				pass
+				pass	
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(result))
+			
 				
 		else:
 			try:
@@ -100,11 +105,11 @@ def handle_message(event):
 						  "User_ID: " + profile.user_id)
 				if profile.status_message:
 					result += "\n" + "Status message: " + profile.status_message
-				line_bot_api.reply_message(
-					event.reply_token,
-					TextSendMessage(result))
 			except LineBotApiError:
 				pass
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(result))
 			
 	else:
 		line_bot_api.reply_message(
