@@ -47,7 +47,7 @@ def handle_message(event):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v2/result?i={}&appid={}'
-		return requests.get(url.format(quote(query), wolfram_appid))
+		return requests.get(url.format(quote(query), wolfram_appid)).text
 	
 	if text == '/help':
 		line_bot_api.reply_message(
