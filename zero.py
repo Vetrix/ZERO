@@ -45,10 +45,10 @@ def handle_message(event):
 
 	def wolfram(query):
 		# WolframAlpha AppID, obtained from developer.wolframalpha.com
-		wolfram_appid = os.getenv('WOLFRAMALPHA_APPID', None)
+		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v1/{}?i={}&appid={}'
-		return requests.get(url.format(simple, quote(query), wolfram_appid))
+		return requests.get(url.format(true, quote(query), wolfram_appid))
 	
 	if text == '/help':
 		line_bot_api.reply_message(
