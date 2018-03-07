@@ -1,4 +1,6 @@
 import os
+from urllib.parse import quote
+import requests
 from flask import Flask, request, abort
 
 from linebot import (
@@ -39,7 +41,15 @@ def callback():
 def handle_message(event):
 
 	text=event.message.text
-			
+	a,b = text.split(" ")
+
+	def wolfram(query):
+		# WolframAlpha AppID, obtained from developer.wolframalpha.com
+		wolfram_appid = os.getenv('WOLFRAMALPHA_APPID', None)
+
+		url = 'https://api.wolframalpha.com/v1/{}?i={}&appid={}'
+		return requests.get(url.format(result, quote(query), wolfram_appid)).text
+	
 	if text == '/help':
 		line_bot_api.reply_message(
 			event.reply_token,
@@ -116,7 +126,12 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(result))
-			
+	
+	elif text[1:].lower().strip().startswith('wolfram'):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(wolfram(b)))
+	
 	else:
 		line_bot_api.reply_message(
 			event.reply_token,
