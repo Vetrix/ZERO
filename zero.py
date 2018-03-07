@@ -128,15 +128,16 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(result))
+			
+	elif text[1:].lower().strip().startswith('wolfram'):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(wolfram(spilit(text))))
+	
 	else:
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(text))
-			
-	if text[1:].lower().strip().startswith('wolfram'):
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(wolfram(spilit(text))))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
