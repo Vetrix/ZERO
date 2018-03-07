@@ -44,10 +44,9 @@ def handle_message(event):
 	a,b = text.split(" ")
 
 	def wolfram(query):
-		# WolframAlpha AppID, obtained from developer.wolframalpha.com
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
-		url = 'https://api.wolframalpha.com/v2/simple?input={}&appid={}'
+		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
 		return requests.get(url.format(quote(query), wolfram_appid))
 	
 	if text == '/help':
