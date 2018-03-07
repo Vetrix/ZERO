@@ -46,7 +46,7 @@ def handle_message(event):
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
-		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
+		url = 'https://api.wolframalpha.com/v2/result?i={}&appid={}'
 		return requests.get(url.format(quote(query), wolfram_appid))
 	
 	if text == '/help':
@@ -125,16 +125,15 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(result))
-	
-	elif text[1:].lower().strip().startswith('wolfram'):
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(wolfram(b)))
-	
 	else:
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(text))
+			
+	if text[1:].lower().strip().startswith('wolfram'):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(wolfram(b)))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
