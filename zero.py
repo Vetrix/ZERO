@@ -41,8 +41,11 @@ def callback():
 def handle_message(event):
 
 	text=event.message.text
-	a,b = text.split(" ")
-
+	
+	def spilit(text):
+		a,b = text.split(" ")
+		return b
+		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -133,7 +136,7 @@ def handle_message(event):
 	if text[1:].lower().strip().startswith('wolfram'):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wolfram(b)))
+			TextSendMessage(wolfram(spilit(text))))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
