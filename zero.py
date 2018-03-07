@@ -43,8 +43,7 @@ def handle_message(event):
 	text=event.message.text
 	
 	def spilit(text):
-		a,b = text.split(" ")
-		return b
+		return text.split('/wolfram ', 1)[-1]
 		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
@@ -128,8 +127,13 @@ def handle_message(event):
 			line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(result))
-			
-	elif text[1:].lower().strip().startswith('wolfram'):
+	
+	elif text=='/wolfram':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /wolfram {input}'))
+	
+	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wolfram(spilit(text))))
