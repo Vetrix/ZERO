@@ -1,5 +1,6 @@
 import os
 from urllib.parse import quote
+from kbbi import KBBI
 import requests
 from flask import Flask, request, abort
 
@@ -42,10 +43,10 @@ def handle_message(event):
 
 	text=event.message.text
 	
-	def spilit1(text):
+	def split1(text):
 		return text.split('/wolfram ', 1)[-1]
 
-	def spilit2(text):
+	def split2(text):
 		return text.split('/kbbi ', 1)[-1]
 		
 	def wolfram(query):
@@ -153,12 +154,12 @@ def handle_message(event):
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wolfram(spilit1(text))))
+			TextSendMessage(wolfram(split1(text))))
 
 	elif text[0:].lower().strip().startswith('/kbbi '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(find_kbbi(spilit2(text))))	
+			TextSendMessage(find_kbbi(split2(text))))	
 			
 	else:
 		line_bot_api.reply_message(
