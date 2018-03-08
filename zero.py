@@ -42,15 +42,32 @@ def handle_message(event):
 
 	text=event.message.text
 	
-	def spilit(text):
+	def split1(text):
 		return text.split('/wolfram ', 1)[-1]
+
+	def split2(text):
+		return text.split('/kbbi ', 1)[-1]
 		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v2/result?i={}&appid={}'
 		return requests.get(url.format(quote(query), wolfram_appid)).text
-	
+
+	def find_kbbi(keyword, ex=False):
+
+		try:
+			entry = KBBI(keyword)
+		except KBBI.TidakDitemukan as e:
+			result = str(e)
+		else:
+			result = "Definisi {}:\n".format(keyword)
+			if ex:
+				result += '\n'.join(entry.arti_contoh)
+			else:
+				result += str(entry)
+		return result
+		
 	if text == '/help':
 		line_bot_api.reply_message(
 			event.reply_token,
@@ -136,8 +153,13 @@ def handle_message(event):
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wolfram(spilit(text))))
-	
+			TextSendMessage(wolfram(split1(text))))
+
+	elif text[0:].lower().strip().startswith('/kbbi '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(find_kbbi(split2(text))))	
+			
 	else:
 		line_bot_api.reply_message(
 			event.reply_token,
