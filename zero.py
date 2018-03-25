@@ -49,6 +49,9 @@ def handle_message(event):
 	def split2(text):
 		return text.split('/kbbi ', 1)[-1]
 		
+	def split3(text):
+		return text.split('/echo ', 1)[-1]
+		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -146,6 +149,11 @@ def handle_message(event):
 				event.reply_token,
 				TextSendMessage(result))
 	
+	elif text=='/kbbi':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /kbbi {input}'))
+	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -161,10 +169,10 @@ def handle_message(event):
 			event.reply_token,
 			TextSendMessage(find_kbbi(split2(text))))	
 			
-	else:
+	elif text[0:].lower().strip().startswith('/echo ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(text))
+			TextSendMessage(split3(text)))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
