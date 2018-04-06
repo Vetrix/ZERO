@@ -1,4 +1,8 @@
+import errno
 import os
+import sys
+import tempfile
+from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
 import requests
@@ -158,7 +162,16 @@ def handle_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('command /wolfram {input}'))
-				
+	
+	elif text == 'confirm':
+		confirm_template = ConfirmTemplate(text='Do it?', actions=[
+			MessageTemplateAction(label='Yes', text='Yes!'),
+			MessageTemplateAction(label='No', text='No!'),
+			])
+		template_message = TemplateSendMessage(
+			alt_text='Confirm alt text', template=confirm_template)
+		line_bot_api.reply_message(event.reply_token, template_message)
+	
 	elif text=='test':
 		line_bot_api.reply_message(
 				event.reply_token,
