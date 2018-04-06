@@ -182,8 +182,8 @@ def handle_message(event):
 	elif text=='test':
 		line_bot_api.reply_message(
 				event.reply_token,
-				ImageSendMessage(original_content_url='http://assets.fieldingdesigngroup.com/images/coffeeshop/IMG_0481.jpg',
-                                  preview_image_url='http://assets.fieldingdesigngroup.com/images/coffeeshop/IMG_0481.jpg'))
+				ImageSendMessage(original_content_url='https://www.dropbox.com/s/arbyj22nph41283/original.jpg',
+                                  preview_image_url='https://www.dropbox.com/s/ipc4v29mh1hyvs9/preview.jpg?dl=0'))
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
