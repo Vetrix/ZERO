@@ -56,18 +56,28 @@ def handle_message(event):
 	
 	def split1(text):
 		return text.split('/wolfram ', 1)[-1]
+		
 
 	def split2(text):
 		return text.split('/kbbi ', 1)[-1]
 		
 	def split3(text):
 		return text.split('/echo ', 1)[-1]
+
+	def split4(text):
+		return text.split('/wolframs ', 1)[-1]
 		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v2/result?i={}&appid={}'
 		return requests.get(url.format(quote(query), wolfram_appid)).text
+		
+	def wolframs(query):
+		wolfram_appid = ('83L4JP-TWUV8VV7J7')
+
+		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
+		return url.format(quote(query), wolfram_appid)
 
 	def find_kbbi(keyword, ex=False):
 
@@ -181,14 +191,20 @@ def handle_message(event):
 	
 	elif text=='test':
 		line_bot_api.reply_message(
-				event.reply_token,
-				ImageSendMessage(original_content_url='https://www.dropbox.com/s/arbyj22nph41283/original.jpg',
-                                  preview_image_url='https://www.dropbox.com/s/ipc4v29mh1hyvs9/preview.jpg'))
+			event.reply_token,
+			ImageSendMessage(original_content_url='https://www.dropbox.com/s/arbyj22nph41283/original.jpg',
+                             preview_image_url='https://www.dropbox.com/s/ipc4v29mh1hyvs9/preview.jpg'))
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wolfram(split1(text))))
+			
+	elif text[0:].lower().strip().startswith('/wolframs '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			ImageSendMessage(original_content_url= wolframs(split4(text)),
+								preview_image_url= wolframs(split4(text))))
 
 	elif text[0:].lower().strip().startswith('/kbbi '):
 		line_bot_api.reply_message(
