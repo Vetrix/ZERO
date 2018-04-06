@@ -183,7 +183,7 @@ def handle_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				ImageSendMessage(original_content_url='https://www.dropbox.com/s/arbyj22nph41283/original.jpg',
-                                  preview_image_url='https://www.dropbox.com/s/ipc4v29mh1hyvs9/preview.jpg?dl=0'))
+                                  preview_image_url='https://www.dropbox.com/s/ipc4v29mh1hyvs9/preview.jpg'))
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
