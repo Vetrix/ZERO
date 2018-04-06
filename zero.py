@@ -16,6 +16,13 @@ from linebot.exceptions import (
 )
 from linebot.models import (
 	MessageEvent, TextMessage, TextSendMessage, SourceGroup, SourceRoom
+	TemplateSendMessage, ConfirmTemplate, MessageTemplateAction,
+	ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URITemplateAction,
+	PostbackTemplateAction, DatetimePickerTemplateAction,
+	CarouselTemplate, CarouselColumn, PostbackEvent,
+	StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
+	ImageMessage, VideoMessage, AudioMessage, FileMessage,
+	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
 )
 
 app = Flask(__name__)
