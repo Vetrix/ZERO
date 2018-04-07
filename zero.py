@@ -132,6 +132,17 @@ def handle_text_message(event):
 								"Nice to meet you... \n"
 								"source code: https://github.com/Vetrix/ZERO"))
 	
+	elif text == '/cmd':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Without parameters: \n"
+								"/about, /help, /profile, /leave \n"
+								"/confirm, /buttons, /search image, \n"
+								"/image_carousel, /imagemap \n"
+								"\n"
+								"With parameters: \n"
+								"/echo, /kbbi, /wolfram, /wolframs \n"))
+	
 	elif text == '/search image':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -189,7 +200,7 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /wolfram {input}'))
 	
-	elif text == 'confirm':
+	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
 			MessageTemplateAction(label='Yes', text='Yes!'),
 			MessageTemplateAction(label='No', text='No!'),
@@ -198,7 +209,7 @@ def handle_text_message(event):
 			alt_text='Confirm alt text', template=confirm_template)
 		line_bot_api.reply_message(event.reply_token, template_message)
 	
-	elif text == 'buttons':
+	elif text == '/buttons':
 		buttons_template = ButtonsTemplate(
 			title='My buttons sample', text='Hello, my buttons', actions=[
 				URITemplateAction(
@@ -213,7 +224,7 @@ def handle_text_message(event):
 			alt_text='Buttons alt text', template=buttons_template)
 		line_bot_api.reply_message(event.reply_token, template_message)
 	
-	elif text == 'image_carousel':
+	elif text == '/image_carousel':
 		image_carousel_template = ImageCarouselTemplate(columns=[
 			ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
 								action=DatetimePickerTemplateAction(label='datetime',
@@ -228,7 +239,7 @@ def handle_text_message(event):
 			alt_text='ImageCarousel alt text', template=image_carousel_template)
 		line_bot_api.reply_message(event.reply_token, template_message)
 		
-	elif text == 'imagemap':
+	elif text == '/imagemap':
 		pass
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
