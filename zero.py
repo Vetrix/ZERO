@@ -141,7 +141,7 @@ def handle_text_message(event):
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
-								"/echo, /kbbi, /wolfram, /wolframs \n"))
+								"/echo, /kbbi, /wolfram, /wolframs"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
