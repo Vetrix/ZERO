@@ -343,7 +343,7 @@ def handle_unfollow():
 def handle_join(event):
 	line_bot_api.reply_message(
 		event.reply_token,
-		TextSendMessage(text='Hi, my name is Reika. Hope we can make some fun. ' + event.source.type))
+		TextSendMessage(text='Hi, my name is Reika. Hope we can make some fun in this ' + event.source.type))
 		
 @handler.add(LeaveEvent)
 def handle_leave():
