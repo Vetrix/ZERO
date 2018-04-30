@@ -290,7 +290,7 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/trans ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(split5(trans(text))))
+			TextSendMessage(trans(split5(text))))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
