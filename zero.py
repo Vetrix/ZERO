@@ -5,6 +5,7 @@ import tempfile
 from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
+from googletrans import Translator
 import requests
 from flask import Flask, request, abort
 
@@ -24,6 +25,8 @@ from linebot.models import (
 	ImageMessage, VideoMessage, AudioMessage, FileMessage,
 	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
 )
+
+translator = Translator()
 
 app = Flask(__name__)
 
@@ -75,7 +78,10 @@ def handle_text_message(event):
 
 	def split4(text):
 		return text.split('/wolframs ', 1)[-1]
-		
+	
+	def split5(text):
+		return text.split('/trans ', 1)[-1]
+	
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -87,7 +93,25 @@ def handle_text_message(event):
 
 		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
 		return url.format(quote(query), wolfram_appid)
-
+	
+	def trans(word):
+		sc = 'id'
+		to = 'en'
+		
+		if word[0:].lower().strip().startswith('sc='):
+			sc = word.split(', ', 1)[0]
+			word = word.split(', ', 1)[1]
+	
+		if word[0:].lower().strip().startswith('to='):
+			to = word.split(', ', 1)[0]
+			word = word.split(', ', 1)[1]
+			
+		if word[0:].lower().strip().startswith('sc='):
+			sc = word.split(', ', 1)[0]
+			word = word.split(', ', 1)[1]
+			
+		return translator.translate(word, src=sc, dest=to)
+	
 	def find_kbbi(keyword, ex=False):
 
 		try:
@@ -262,6 +286,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(split3(text)))
+			
+	elif text[0:].lower().strip().startswith('/trans ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(split5(trans(text))))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
