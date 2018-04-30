@@ -2,5 +2,4 @@ flask
 line-bot-sdk
 kbbi
 argparse
-urllib.parse
 googletrans
