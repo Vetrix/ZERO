@@ -69,7 +69,6 @@ def handle_text_message(event):
 	def split1(text):
 		return text.split('/wolfram ', 1)[-1]
 		
-
 	def split2(text):
 		return text.split('/kbbi ', 1)[-1]
 		
@@ -113,7 +112,7 @@ def handle_text_message(event):
 			sc = sc.split('sc=', 1)[-1]
 			word = word.split(', ', 1)[1]
 			
-		return translator.translate(word, src=sc, dest=to)
+		return translator.translate(word, src=sc, dest=to).text
 	
 	def find_kbbi(keyword, ex=False):
 
