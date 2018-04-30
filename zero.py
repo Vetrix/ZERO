@@ -168,7 +168,13 @@ def handle_text_message(event):
 								"\n"
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
-								"/trans,"))
+								"/trans, /lang"))
+	
+	elif text == '/lang':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Language for Translation see here \n"
+								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
