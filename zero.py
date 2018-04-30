@@ -162,18 +162,18 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("Without parameters: \n"
-								"/about, /help, /profile, /leave \n"
+								"/about, /help, /profile, /leave, /lang \n"
 								"/confirm, /buttons, /search image, \n"
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
-								"/trans, /lang"))
+								"/trans"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("Language for Translation see here \n"
+				TextSendMessage("Language for translation see here \n"
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
 	
 	elif text == '/search image':
