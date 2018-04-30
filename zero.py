@@ -167,7 +167,8 @@ def handle_text_message(event):
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
-								"/echo, /kbbi, /wolfram, /wolframs"))
+								"/echo, /kbbi, /wolfram, /wolframs, \n"
+								"/trans,"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
@@ -225,6 +226,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('command /wolfram {input}'))
+				
+	elif text=='/trans':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /trans sc={}, to={}, {text}'))
 	
 	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
