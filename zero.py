@@ -100,14 +100,17 @@ def handle_text_message(event):
 		
 		if word[0:].lower().strip().startswith('sc='):
 			sc = word.split(', ', 1)[0]
+			sc = sc.split('sc=', 1)[-1]
 			word = word.split(', ', 1)[1]
 	
 		if word[0:].lower().strip().startswith('to='):
 			to = word.split(', ', 1)[0]
+			to = to.split('to=', 1)[-1]
 			word = word.split(', ', 1)[1]
 			
 		if word[0:].lower().strip().startswith('sc='):
 			sc = word.split(', ', 1)[0]
+			sc = sc.split('sc=', 1)[-1]
 			word = word.split(', ', 1)[1]
 			
 		return translator.translate(word, src=sc, dest=to)
