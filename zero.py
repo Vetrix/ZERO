@@ -366,12 +366,12 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/wiki ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wiki_get(split6(text))))
+			TextSendMessage(wiki_get(split6(text), set_id=set_id)))
 			
 	elif text[0:].lower().strip().startswith('/wikilang ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wiki_lang(split7(text))))
+			TextSendMessage(wiki_lang(split7(text), set_id=set_id)))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
