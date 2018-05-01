@@ -3,3 +3,4 @@ line-bot-sdk
 kbbi
 argparse
 googletrans
+wikipedia
