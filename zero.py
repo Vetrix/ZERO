@@ -68,6 +68,18 @@ def handle_text_message(event):
 
 	text=event.message.text
 	
+	if isinstance(event.source, SourceGroup):
+        subject = line_bot_api.get_group_member_profile(event.source.group_id,
+                                                    event.source.user_id)
+        set_id = event.source.group_id
+    elif isinstance(event.source, SourceRoom):
+        subject = line_bot_api.get_room_member_profile(event.source.room_id,
+                                                   event.source.user_id)
+        set_id = event.source.room_id
+    else:
+        subject = line_bot_api.get_profile(event.source.user_id)
+        set_id = event.source.user_id
+	
 	def split1(text):
 		return text.split('/wolfram ', 1)[-1]
 		
