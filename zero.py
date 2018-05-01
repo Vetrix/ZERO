@@ -7,6 +7,7 @@ from urllib.parse import quote
 from kbbi import KBBI
 from googletrans import Translator
 import requests
+import wikipedia
 from flask import Flask, request, abort
 
 from linebot import (
@@ -27,6 +28,7 @@ from linebot.models import (
 )
 
 translator = Translator()
+wiki_settings = {}
 
 app = Flask(__name__)
 
@@ -81,6 +83,12 @@ def handle_text_message(event):
 	def split5(text):
 		return text.split('/trans ', 1)[-1]
 	
+	def split6(text):
+		return text.split('/wiki ', 1)[-1]
+	
+	def split7(text):
+		return text.split('/wikilang ', 1)[-1]
+		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -113,6 +121,45 @@ def handle_text_message(event):
 			word = word.split(', ', 1)[1]
 			
 		return translator.translate(word, src=sc, dest=to).text
+		
+	def wiki_get(keyword, set_id, trim=True):
+    
+		try:
+			wikipedia.set_lang(wiki_settings[set_id])
+		except KeyError:
+			wikipedia.set_lang('en')
+
+		try:
+			result = wikipedia.summary(keyword)
+
+		except wikipedia.exceptions.DisambiguationError:
+			articles = wikipedia.search(keyword)
+			result = "{} disambiguation:".format(keyword)
+			for item in articles:
+				result += "\n{}".format(item)
+		except wikipedia.exceptions.PageError:
+			result = "{} not found!".format(keyword)
+
+		else:
+			if trim:
+				result = result[:2000]
+				if not result.endswith('.'):
+					result = result[:result.rfind('.')+1]
+		return result
+		
+	def wiki_lang(lang, set_id):
+    
+		langs_dict = wikipedia.languages()
+		if lang in langs_dict.keys():
+			wiki_settings[set_id] = lang
+			return ("Language has been changed to {} successfully."
+					.format(langs_dict[lang]))
+
+		return ("{} not available!\n"
+				"See meta.wikimedia.org/wiki/List_of_Wikipedias for "
+				"a list of available languages, and use the prefix "
+				"in the Wiki column to set the language."
+				.format(lang))	
 	
 	def find_kbbi(keyword, ex=False):
 
@@ -238,6 +285,16 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /trans sc={}, to={}, {text}'))
 	
+	elif text=='/wiki':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /wiki {text}'))
+				
+	elif text=='/wikilang':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /wikilang {language_id}'))
+	
 	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
 			MessageTemplateAction(label='Yes', text='Yes!'),
@@ -305,6 +362,16 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(trans(split5(text))))
+	
+	elif text[0:].lower().strip().startswith('/wiki ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(wiki_get(split6(text))))
+			
+	elif text[0:].lower().strip().startswith('/wikilang ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(wiki_lang(split7(text))))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
