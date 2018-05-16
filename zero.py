@@ -5,9 +5,11 @@ import tempfile
 from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
+from urbandictionary_top import udtop
 from googletrans import Translator
 import requests
 import wikipedia
+
 from flask import Flask, request, abort
 
 from linebot import (
@@ -101,6 +103,9 @@ def handle_text_message(event):
 	def split7(text):
 		return text.split('/wikilang ', 1)[-1]
 		
+	def split8(text):
+		return text.split('/urban ', 1)[-1]
+		
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -173,7 +178,7 @@ def handle_text_message(event):
 				"in the Wiki column to set the language."
 				.format(lang))	
 	
-	def find_kbbi(keyword, ex=False):
+	def find_kbbi(keyword, ex=True):
 
 		try:
 			entry = KBBI(keyword)
@@ -186,7 +191,21 @@ def handle_text_message(event):
 			else:
 				result += str(entry)
 		return result
+	
+	def urban(keyword, ex=True):
 		
+		try:
+			result = udtop(keyword)
+		except udtop.TermNotFound as e:
+			result = str(e)
+		else:
+			result = "{} definition:\n".format(keyword)
+			if ex:
+				result += str(result)
+			else:
+				result += result.definition
+		return result
+	
 	if text == '/help':
 		line_bot_api.reply_message(
 			event.reply_token,
@@ -287,6 +306,11 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /kbbi {input}'))
 	
+	elif text=='/urban':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /urban {input}'))
+	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -363,7 +387,12 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/kbbi '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(find_kbbi(split2(text))))	
+			TextSendMessage(find_kbbi(split2(text))))
+			
+	elif text[0:].lower().strip().startswith('/urban '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(urban(split8(text))))
 			
 	elif text[0:].lower().strip().startswith('/echo ') :
 		line_bot_api.reply_message(
