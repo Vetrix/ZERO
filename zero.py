@@ -199,11 +199,10 @@ def handle_text_message(event):
 		except udtop.TermNotFound as e:
 			result = str(e)
 		else:
-			result = "{} definition:\n".format(keyword)
 			if ex:
-				result += str(result)
+				result = str(result)
 			else:
-				result += result.definition
+				result = result.definition
 		return result
 	
 	if text == '/help':
