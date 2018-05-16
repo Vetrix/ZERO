@@ -195,14 +195,15 @@ def handle_text_message(event):
 	def urban(keyword, ex=True):
 		
 		try:
-			result = udtop(keyword)
+			entry = udtop(keyword)
 		except udtop.TermNotFound as e:
 			result = str(e)
 		else:
+			result = "{} definition:\n".format(keyword)
 			if ex:
-				result = str(result)
+				result += str(entry)
 			else:
-				result = result.definition
+				result += entry.definition
 		return result
 	
 	if text == '/help':
