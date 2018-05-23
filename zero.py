@@ -231,7 +231,7 @@ def handle_text_message(event):
 		
 		try:
 			entry = udtop(keyword)
-		except udtop.TermNotFound as e:
+		except udtop.TermNotFound:
 			result = "{} definition not found in urbandictionary.".format(keyword)
 		else:
 			result = "{} definition:\n".format(keyword)
