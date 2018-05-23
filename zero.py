@@ -105,7 +105,42 @@ def handle_text_message(event):
 		
 	def split8(text):
 		return text.split('/urban ', 1)[-1]
+
+	def split9(text):
+		return text.split('/ox ', 1)[-1]
 		
+	def ox(keyword):
+		oxdict_appid = ('7dff6c56')
+		oxdict_key = ('41b55bba54078e9fb9f587f1b978121f')
+		
+		word = quote(keyword)
+		url = ('https://od-api.oxforddictionaries.com:443/api/v1/entries/en/{}'.format(word))
+		req = requests.get(url, headers={'app_id': oxdict_appid, 'app_key': oxdict_key})
+		if "No entry available" in req.text:
+			return 'No entry available for "{}".'.format(word)
+
+		req = req.json()
+		result = ''
+		i = 0
+		for each_result in req['results']:
+			for each_lexEntry in each_result['lexicalEntries']:
+				for each_entry in each_lexEntry['entries']:
+					for each_sense in each_entry['senses']:
+						if 'crossReferenceMarkers' in each_sense:
+							search = 'crossReferenceMarkers'
+						else:
+							search = 'definitions'
+						for each_def in each_sense[search]:
+							i += 1
+							result += '\n{}. {}'.format(i, each_def)
+
+		if i == 1:
+			result = 'Definition of {}:\n'.format(keyword) + result[4:]
+		else:
+			result = 'Definitions of {}:'.format(keyword) + result
+		return result
+
+	
 	def wolfram(query):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
@@ -197,7 +232,7 @@ def handle_text_message(event):
 		try:
 			entry = udtop(keyword)
 		except udtop.TermNotFound as e:
-			result = str(e)
+			result = "{} definition not found in urbandictionary.".format(keyword)
 		else:
 			result = "{} definition:\n".format(keyword)
 			if ex:
@@ -393,6 +428,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(urban(split8(text))))
+			
+	elif text[0:].lower().strip().startswith('/ox '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(ox(split9(text))))
 			
 	elif text[0:].lower().strip().startswith('/echo ') :
 		line_bot_api.reply_message(
