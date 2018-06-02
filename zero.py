@@ -32,6 +32,7 @@ from linebot.models import (
 translator = Translator()
 wiki_settings = {}
 
+
 app = Flask(__name__)
 
 line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9gRFbanmFTbv9wwW8psPOrrg+mHtOkp1l+CTlqVeoUWwWfo54lNh16CcqH7wmQQHT+KnkNataGXez6nNY8YlahgO7piAAKqfjLgdB04t89/1O/w1cDnyilFU=')
@@ -277,17 +278,38 @@ def handle_text_message(event):
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave, /lang \n"
 								"/confirm, /buttons, /search image, \n"
+								"/manga, /dots, /track, /bet \n"
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
-								"/trans"))
+								"/trans, /wiki, /wikilang, /urban, /ox"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("Language for translation see here \n"
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
+	
+	elif text == '/manga':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("https://mangaku.in/"))
+	
+	elif text == '/dots':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("https://instagram.com/dotaindonesia2"))
+	
+	elif text == '/track':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("https://dota2.prizetrac.kr/international2018"))
+	
+	elif text == '/bet':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("https://dota2.com/predictions"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
@@ -345,6 +367,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('command /urban {input}'))
+	
+	elif text=='/ox':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /ox {input}'))
 	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
