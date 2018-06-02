@@ -294,22 +294,22 @@ def handle_text_message(event):
 	elif text == '/manga':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("https://mangaku.in/"))
+				TextSendMessage("mangaku.in"))
 	
 	elif text == '/dots':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("https://instagram.com/dotaindonesia2"))
+				TextSendMessage("https://www.instagram.com/dotaindonesia2/"))
 	
 	elif text == '/track':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("https://dota2.prizetrac.kr/international2018"))
+				TextSendMessage("http://dota2.prizetrac.kr/international2018"))
 	
 	elif text == '/bet':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("https://dota2.com/predictions"))
+				TextSendMessage("dota2.com/predictions"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
