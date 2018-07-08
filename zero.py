@@ -26,6 +26,7 @@ from linebot.models import (
 	CarouselTemplate, CarouselColumn, PostbackEvent,
 	StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
 	ImageMessage, VideoMessage, AudioMessage, FileMessage,
+	VideoSendMessage, AudioSendMessage,
 	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
 )
 
@@ -290,6 +291,12 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("Language for translation see here \n"
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
+	
+	elif text == '/test':
+		line_bot_api.reply_message(
+				event.reply_token,
+				AudioSendMessage(original_content_url='http://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a',
+									duration=240000))
 	
 	elif text == '/manga':
 		line_bot_api.reply_message(
