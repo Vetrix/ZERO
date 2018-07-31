@@ -16,7 +16,7 @@ from linebot import (
 	LineBotApi, WebhookHandler
 )
 from linebot.exceptions import (
-	InvalidSignatureError
+	InvalidSignatureError, LineBotApiError
 )
 from linebot.models import (
 	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, SourceGroup, SourceRoom,
@@ -38,6 +38,8 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9gRFbanmFTbv9wwW8psPOrrg+mHtOkp1l+CTlqVeoUWwWfo54lNh16CcqH7wmQQHT+KnkNataGXez6nNY8YlahgO7piAAKqfjLgdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
+
+static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
 # function for create tmp dir for download content
 def make_static_tmp_dir():
