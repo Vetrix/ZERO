@@ -525,13 +525,13 @@ def handle_content_message(event):
 	with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
 		for chunk in message_content.iter_content():
 			tf.write(chunk)
-		tempfile_ori = tf.name
+		tempfile_path = tf.name
 
-	tempfile_path = tempfile_ori.replace(" ", "_")
 	dist_path = tempfile_path + '.' + ext
 	dist_name = os.path.basename(dist_path)
 	os.rename(tempfile_path, dist_path)
-
+	dist_name = dist_name.replace(" ","_")
+	
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save content.'),
@@ -544,13 +544,14 @@ def handle_file_message(event):
 	with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='file-', delete=False) as tf:
 		for chunk in message_content.iter_content():
 			tf.write(chunk)
-		tempfile_ori = tf.name
+		tempfile_path = tf.name
 
-	tempfile_path = tempfile_ori.replace(" ", "_")
+		
 	dist_path = tempfile_path + '-' + event.message.file_name
 	dist_name = os.path.basename(dist_path)
 	os.rename(tempfile_path, dist_path)
-
+	dist_name = dist_name.replace(" ","_")
+	
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save file.'),
