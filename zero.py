@@ -512,15 +512,15 @@ def handle_content_message(event):
 			tf.write(chunk)
 		tempfile_path = tf.name
 
-    dist_path = tempfile_path + '.' + ext
-    dist_name = os.path.basename(dist_path)
-    os.rename(tempfile_path, dist_path)
-
-    line_bot_api.reply_message(
-        event.reply_token, [
-            TextSendMessage(text='Save content.'),
-            TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
-        ])
+	dist_path = tempfile_path + '.' + ext
+	dist_name = os.path.basename(dist_path)
+	os.rename(tempfile_path, dist_path)
+	
+	line_bot_api.reply_message(
+		event.reply_token, [
+			TextSendMessage(text='Save content.'),
+			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+		])
 		
 @handler.add(MessageEvent, message=FileMessage)
 def handle_file_message(event):
@@ -529,13 +529,16 @@ def handle_file_message(event):
 		for chunk in message_content.iter_content():
 			tf.write(chunk)
 		tempfile_path = tf.name
-
-		
-    line_bot_api.reply_message(
-        event.reply_token, [
-            TextSendMessage(text='Save file.'),
-            TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
-        ])
+	
+	dist_path = tempfile_path + '-' + event.message.file_name
+	dist_name = os.path.basename(dist_path)
+	os.rename(tempfile_path, dist_path)
+	
+	line_bot_api.reply_message(
+		event.reply_token, [
+			TextSendMessage(text='Save file.'),
+			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+		])
 		
 @handler.add(FollowEvent)
 def handle_follow(event):
