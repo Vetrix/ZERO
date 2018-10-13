@@ -113,6 +113,9 @@ def handle_text_message(event):
 	def split9(text):
 		return text.split('/ox ', 1)[-1]
 		
+	def split10(text):
+		return text.split('/test ', 1)[-1]		
+		
 	def ox(keyword):
 		oxdict_appid = ('7dff6c56')
 		oxdict_key = ('41b55bba54078e9fb9f587f1b978121f')
@@ -294,12 +297,6 @@ def handle_text_message(event):
 				TextSendMessage("Language for translation see here \n"
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
 	
-	elif text == '/test':
-		line_bot_api.reply_message(
-				event.reply_token,
-				AudioSendMessage(original_content_url=static_tmp_path,
-									duration=240000))
-	
 	elif text == '/manga':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -474,6 +471,12 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wiki_lang(split7(text), set_id=set_id)))
+			
+	elif text[0:].lower().strip().startswith('/test ') :
+		line_bot_api.reply_message(
+				event.reply_token,
+				AudioSendMessage(original_content_url=split10(text),
+									duration=240000))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
