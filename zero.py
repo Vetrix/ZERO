@@ -281,7 +281,7 @@ def handle_text_message(event):
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave, /lang \n"
 								"/confirm, /buttons, /search image, \n"
-								"/manga, /dots, /track, /bet \n"
+								"/manga \n"
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
@@ -297,28 +297,13 @@ def handle_text_message(event):
 	elif text == '/test':
 		line_bot_api.reply_message(
 				event.reply_token,
-				AudioSendMessage(original_content_url='http://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a',
+				AudioSendMessage(original_content_url=static_tmp_path,
 									duration=240000))
 	
 	elif text == '/manga':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("mangaku.in"))
-	
-	elif text == '/dots':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("https://www.instagram.com/dotaindonesia2/"))
-	
-	elif text == '/track':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("http://dota2.prizetrac.kr/international2018"))
-	
-	elif text == '/bet':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("dota2.com/predictions"))
 	
 	elif text == '/search image':
 		line_bot_api.reply_message(
@@ -529,8 +514,10 @@ def handle_content_message(event):
 
 	dist_path = tempfile_path + '.' + ext
 	dist_name = os.path.basename(dist_path)
-	os.rename(tempfile_path, dist_path)
 	dist_name = dist_name.replace(" ","_")
+	dist_name = dist_name.replace(".","_")
+	os.rename(tempfile_path, dist_path)
+	
 	
 	line_bot_api.reply_message(
 		event.reply_token, [
@@ -549,8 +536,10 @@ def handle_file_message(event):
 		
 	dist_path = tempfile_path + '-' + event.message.file_name
 	dist_name = os.path.basename(dist_path)
-	os.rename(tempfile_path, dist_path)
 	dist_name = dist_name.replace(" ","_")
+	dist_name = dist_name.replace(".","_")
+	os.rename(tempfile_path, dist_path)
+
 	
 	line_bot_api.reply_message(
 		event.reply_token, [
