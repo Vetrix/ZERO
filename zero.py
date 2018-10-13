@@ -512,10 +512,11 @@ def handle_content_message(event):
 			tf.write(chunk)
 		tempfile_path = tf.name
 
-	dist_path = tempfile_path + '.' + ext
+	dist_path = tempfile_path
 	dist_name = os.path.basename(dist_path)
 	dist_name = dist_name.replace(" ","_")
 	dist_name = dist_name.replace(".","_")
+	dist_path = dist_path + '.' + ext
 	os.rename(tempfile_path, dist_path)
 	
 	
@@ -534,10 +535,11 @@ def handle_file_message(event):
 		tempfile_path = tf.name
 
 		
-	dist_path = tempfile_path + '-' + event.message.file_name
+	dist_path = tempfile_path
 	dist_name = os.path.basename(dist_path)
 	dist_name = dist_name.replace(" ","_")
 	dist_name = dist_name.replace(".","_")
+	dist_name = dist_name + '-' + event.message.file_name
 	os.rename(tempfile_path, dist_path)
 
 	
