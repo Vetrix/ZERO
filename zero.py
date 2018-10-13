@@ -475,8 +475,7 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
 				event.reply_token,
-				AudioSendMessage(original_content_url=split10(text),
-									duration=240000))
+				AudioSendMessage(original_content_url=(split10(text))))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
