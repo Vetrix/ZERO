@@ -140,7 +140,9 @@ def handle_text_message(event):
 		dist_path = tempfile_path + '.' + ext
 		dist_name = os.path.basename(dist_path)
 		os.rename(tempfile_path, dist_path)
-		return dist_path
+		
+		url = request.host_url + os.path.join('static', 'tmp', dist_name)
+		return url
 
 	
 	def ox(keyword):
