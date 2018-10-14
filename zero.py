@@ -142,7 +142,7 @@ def handle_text_message(event):
 		os.rename(tempfile_path, dist_path)
 		
 		url = request.host_url + os.path.join('static', 'tmp', dist_name)
-		return url
+		return force_safe(url)
 
 	
 	def ox(keyword):
