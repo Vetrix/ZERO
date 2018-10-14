@@ -115,7 +115,12 @@ def handle_text_message(event):
 		
 	def split10(text):
 		return text.split('/test ', 1)[-1]		
-		
+	
+	def safe_url(target):
+		newurl = target
+		newurl.replace("http://", "https://", 1)
+		return newurl
+	
 	def ox(keyword):
 		oxdict_appid = ('7dff6c56')
 		oxdict_key = ('41b55bba54078e9fb9f587f1b978121f')
@@ -521,7 +526,7 @@ def handle_content_message(event):
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save content.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+			TextSendMessage(text=safe_url(request.host_url + os.path.join('static', 'tmp', dist_name)))
 		])
 		
 @handler.add(MessageEvent, message=FileMessage)
@@ -539,7 +544,7 @@ def handle_file_message(event):
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save file.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+			TextSendMessage(text=safe_url(request.host_url + os.path.join('static', 'tmp', dist_name)))
 		])
 		
 @handler.add(FollowEvent)
