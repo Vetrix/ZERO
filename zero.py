@@ -317,8 +317,9 @@ def handle_text_message(event):
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
-								"/echo, /kbbi, /wolfram, /wolframs\n"
-								"/trans, /wiki, /wikilang, /urban, /ox, /tts"))
+								"/echo, /kbbi, /wolfram, /wolframs, \n"
+								"/trans, /wiki, /wikilang, /urban, \n"
+								"/ox, /tts"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
