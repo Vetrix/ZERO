@@ -513,8 +513,10 @@ def handle_text_message(event):
 				
 	elif text[0:].lower().strip().startswith('/tts ') :
 		line_bot_api.reply_message(
-				event.reply_token,
-				AudioSendMessage(original_content_url=tts(split11(text))), duration=60000)
+				event.reply_token, [
+				TextSendMessage(tts(split11(text))),
+				AudioSendMessage(original_content_url=tts(split11(text)), duration=60000)
+				])
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
