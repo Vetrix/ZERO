@@ -2,6 +2,7 @@ import errno
 import os
 import sys
 import tempfile
+from gtts import gTTS
 from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
@@ -114,10 +115,29 @@ def handle_text_message(event):
 		return text.split('/ox ', 1)[-1]
 		
 	def split10(text):
-		return text.split('/test ', 1)[-1]		
+		return text.split('/test ', 1)[-1]	
+
+	def split11(text):
+		return text.split('/tts ', 1)[-1]		
 	
 	def force_safe(text):
 		return text.replace('http','https',1)
+	
+	def tts(word):
+		to ='en'
+		
+		if word[0:].lower().strip().startswith('to='):
+			to = word.split(', ', 1)[0]
+			to = to.split('to=', 1)[-1]
+			word = word.split(', ', 1)[1]
+			
+		speech = gTTS(text=word, lang=to)
+		with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='mp3-', delete=False) as tf:
+			speech.write_to_fp(tf)
+		tempfile_path = tf.name
+
+		return tempfile_path
+
 	
 	def ox(keyword):
 		oxdict_appid = ('7dff6c56')
@@ -479,6 +499,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				AudioSendMessage(original_content_url=(split10(text)), duration=60000))
+				
+	elif text[0:].lower().strip().startswith('/tts ') :
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(tts(split11(text))))
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
