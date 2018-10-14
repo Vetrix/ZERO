@@ -524,8 +524,7 @@ def handle_content_message(event):
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save content.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name)),
-			TextSendMessage(force_safe(text))
+			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
 		])
 		
 @handler.add(MessageEvent, message=FileMessage)
@@ -543,8 +542,7 @@ def handle_file_message(event):
 	line_bot_api.reply_message(
 		event.reply_token, [
 			TextSendMessage(text='Save file.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name)),
-			TextSendMessage(force_safe(text))
+			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
 		])
 		
 @handler.add(FollowEvent)
