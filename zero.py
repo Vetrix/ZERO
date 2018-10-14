@@ -124,15 +124,15 @@ def handle_text_message(event):
 		return text.replace('http','https',1)
 	
 	def tts(word):
-		to ='en'
+		la ='en'
 		ext = 'mp3'
 		
-		if word[0:].lower().strip().startswith('to='):
-			to = word.split(', ', 1)[0]
-			to = to.split('to=', 1)[-1]
+		if word[0:].lower().strip().startswith('la='):
+			la = word.split(', ', 1)[0]
+			la = la.split('la=', 1)[-1]
 			word = word.split(', ', 1)[1]
 			
-		speech = gTTS(text=word, lang=to)
+		speech = gTTS(text=word, lang=la)
 		with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='mp3-', delete=False) as tf:
 			speech.write_to_fp(tf)
 		tempfile_path = tf.name
@@ -317,7 +317,7 @@ def handle_text_message(event):
 								"/image_carousel, /imagemap \n"
 								"\n"
 								"With parameters: \n"
-								"/echo, /kbbi, /wolfram, /wolframs, \n"
+								"/echo, /kbbi, /wolfram, /wolframs, /tts \n"
 								"/trans, /wiki, /wikilang, /urban, /ox"))
 	
 	elif text == '/lang':
@@ -402,6 +402,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('command /trans sc={}, to={}, {text}'))
+				
+	elif text=='/tts':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /tts la={}, {text}'))
 	
 	elif text=='/wiki':
 		line_bot_api.reply_message(
@@ -509,7 +514,7 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/tts ') :
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(tts(split11(text))))
+				AudioSendMessage(original_content_url=tts(split11(text))), duration=60000)
 			
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_location_message(event):
