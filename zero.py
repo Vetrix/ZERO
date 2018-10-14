@@ -125,6 +125,7 @@ def handle_text_message(event):
 	
 	def tts(word):
 		to ='en'
+		ext = 'mp3'
 		
 		if word[0:].lower().strip().startswith('to='):
 			to = word.split(', ', 1)[0]
@@ -135,8 +136,11 @@ def handle_text_message(event):
 		with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='mp3-', delete=False) as tf:
 			speech.write_to_fp(tf)
 		tempfile_path = tf.name
-
-		return tempfile_path
+		
+		dist_path = tempfile_path + '.' + ext
+		dist_name = os.path.basename(dist_path)
+		os.rename(tempfile_path, dist_path)
+		return dist_path
 
 	
 	def ox(keyword):
