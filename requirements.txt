@@ -5,3 +5,4 @@ urbandictionary_top
 argparse
 googletrans
 wikipedia
+gtts
