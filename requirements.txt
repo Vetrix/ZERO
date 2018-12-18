@@ -6,3 +6,4 @@ argparse
 googletrans-temp==2.3.0 
 wikipedia
 gTTS==2.0.3 
+gTTS-token==1.1.3
