@@ -3,6 +3,6 @@ line-bot-sdk
 kbbi
 urbandictionary_top
 argparse
-googletrans
+googletrans-temp 2.3.0 
 wikipedia
-gtts
+gTTS 2.0.3 
