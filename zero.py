@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
 from urbandictionary_top import udtop
-from googletrans import Translator
+from googletrans-temp import Translator
 import requests
 import wikipedia
 
