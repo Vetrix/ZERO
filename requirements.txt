@@ -1,9 +1,9 @@
-flask
-line-bot-sdk
-kbbi
+flask==1.0.2
+line-bot-sdk==1.8.0
+kbbi==0.2.1
 urbandictionary_top
 argparse
 googletrans-temp==2.3.0 
 wikipedia
-gTTS==2.0.3 
+gTTS==2.0.3
 gTTS-token==1.1.3
