@@ -10,6 +10,7 @@ from urbandictionary_top import udtop
 from googletrans import Translator
 import requests
 import wikipedia
+import json
 
 from flask import Flask, request, abort
 
@@ -87,41 +88,36 @@ def handle_text_message(event):
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
 	
-	def split1(text):
-		return text.split('/wolfram ', 1)[-1]
-		
-	def split2(text):
-		return text.split('/kbbi ', 1)[-1]
-		
-	def split3(text):
-		return text.split('/echo ', 1)[-1]
-
-	def split4(text):
-		return text.split('/wolframs ', 1)[-1]
-	
-	def split5(text):
-		return text.split('/trans ', 1)[-1]
-	
-	def split6(text):
-		return text.split('/wiki ', 1)[-1]
-	
-	def split7(text):
-		return text.split('/wikilang ', 1)[-1]
-		
-	def split8(text):
-		return text.split('/urban ', 1)[-1]
-
-	def split9(text):
-		return text.split('/ox ', 1)[-1]
-		
-	def split10(text):
-		return text.split('/test ', 1)[-1]	
-
-	def split11(text):
-		return text.split('/tts ', 1)[-1]		
+	def split(text):
+		return text.split(' ', 1)[-1]		
 	
 	def force_safe(text):
 		return text.replace('http','https',1)
+		
+	def ig(username) :
+		url = "https://www.instagram.com/{}"
+		r = requests.get(url.format(username))
+		html = r.text
+		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+
+		data = json.loads(jsondata)
+		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
+
+		return ("User: "+ dict1['username'] + "\n" + "Name: " + dict1['full_name'] + "\n" + 
+		"Following: " + dict1['edge_follow']['count'] + "\n" +
+		"Followers: " + dict1['edge_followed_by']['count'])
+		
+	def igs(username) :
+		url = "https://www.instagram.com/{}"
+		r = requests.get(url.format(username))
+		html = r.text
+		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+
+		data = json.loads(jsondata)
+		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
+
+		return (dict1['profile_pic_url_hd'])
+		
 	
 	def tts(word):
 		la ='en'
@@ -319,7 +315,7 @@ def handle_text_message(event):
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
-								"/ox, /tts"))
+								"/ox, /tts, /stalkig"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
@@ -399,6 +395,16 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /wolfram {input}'))
 				
+	elif text=='/wolframs':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /wolframs {input}'))
+				
+	elif text=='/stalkig':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /stalkig {input}'))
+				
 	elif text=='/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -461,62 +467,70 @@ def handle_text_message(event):
 	elif text == '/imagemap':
 		pass
 	
+	elif text[0:].lower().strip().startswith('/stalkig '):
+		line_bot_api.reply_message(
+			event.reply_token, [
+			TextSendMessage(ig(split(text))),
+			ImageSendMessage(original_content_url= igs(split(text)),
+							preview_image_url= wolframs(split(text)))
+			])
+	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wolfram(split1(text))))
+			TextSendMessage(wolfram(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/wolframs '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			ImageSendMessage(original_content_url= wolframs(split4(text)),
-								preview_image_url= wolframs(split4(text))))
+			ImageSendMessage(original_content_url= wolframs(split(text)),
+								preview_image_url= wolframs(split(text))))
 
 	elif text[0:].lower().strip().startswith('/kbbi '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(find_kbbi(split2(text))))
+			TextSendMessage(find_kbbi(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/urban '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(urban(split8(text))))
+			TextSendMessage(urban(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/ox '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(ox(split9(text))))
+			TextSendMessage(ox(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/echo ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(split3(text)))
+			TextSendMessage(split(text)))
 			
 	elif text[0:].lower().strip().startswith('/trans ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(trans(split5(text))))
+			TextSendMessage(trans(split(text))))
 	
 	elif text[0:].lower().strip().startswith('/wiki ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wiki_get(split6(text), set_id=set_id)))
+			TextSendMessage(wiki_get(split(text), set_id=set_id)))
 			
 	elif text[0:].lower().strip().startswith('/wikilang ') :
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wiki_lang(split7(text), set_id=set_id)))
+			TextSendMessage(wiki_lang(split(text), set_id=set_id)))
 			
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
 				event.reply_token,
-				AudioSendMessage(original_content_url=(split10(text)), duration=60000))
+				AudioSendMessage(original_content_url=(split(text)), duration=60000))
 				
 	elif text[0:].lower().strip().startswith('/tts ') :
 		line_bot_api.reply_message(
 				event.reply_token, [
-				TextSendMessage(tts(split11(text))),
-				AudioSendMessage(original_content_url=tts(split11(text)), duration=60000)
+				TextSendMessage(tts(split(text))),
+				AudioSendMessage(original_content_url=tts(split(text)), duration=60000)
 				])
 			
 @handler.add(MessageEvent, message=LocationMessage)
