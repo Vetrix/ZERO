@@ -103,10 +103,10 @@ def handle_text_message(event):
 		data = json.loads(jsondata)
 		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-		return ("User: @"+ dict1['username'] + "\n" + "Name: " + dict1['full_name'] + "\n" + 
-		"Following: " + str(dict1['edge_follow']['count']) + "\n" +
-		"Followers: " + str(dict1['edge_followed_by']['count']) + "\n" +
-		"Bio :" + dict1['biography'])
+		return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
+		"Following : " + str(dict1['edge_follow']['count']) + "\n" +
+		"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
+		"Bio : " + dict1['biography'])
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
