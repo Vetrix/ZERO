@@ -105,7 +105,8 @@ def handle_text_message(event):
 
 		return ("User: "+ dict1['username'] + "\n" + "Name: " + dict1['full_name'] + "\n" + 
 		"Following: " + dict1['edge_follow']['count'] + "\n" +
-		"Followers: " + dict1['edge_followed_by']['count'])
+		"Followers: " + dict1['edge_followed_by']['count'] + "\n" +
+		"HD profile pic:" + dict1['profile_pic_url_hd'])
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
@@ -116,7 +117,7 @@ def handle_text_message(event):
 		data = json.loads(jsondata)
 		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-		return (dict1['profile_pic_url_hd'])
+		return (dict1['profile_pic_url'])
 		
 	
 	def tts(word):
@@ -472,7 +473,7 @@ def handle_text_message(event):
 			event.reply_token, [
 			TextSendMessage(ig(split(text))),
 			ImageSendMessage(original_content_url= igs(split(text)),
-							preview_image_url= wolframs(split(text)))
+							preview_image_url= igs(split(text)))
 			])
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
