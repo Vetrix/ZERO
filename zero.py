@@ -104,9 +104,9 @@ def handle_text_message(event):
 		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
 		return ("User: "+ dict1['username'] + "\n" + "Name: " + dict1['full_name'] + "\n" + 
-		"Following: " + dict1['edge_follow']['count'] + "\n" +
-		"Followers: " + dict1['edge_followed_by']['count'] + "\n" +
-		"HD profile pic:" + dict1['profile_pic_url_hd'])
+		"Following: " + str(dict1['edge_follow']['count']) + "\n" +
+		"Followers: " + str(dict1['edge_followed_by']['count']) + "\n" +
+		"HD profile pic:" + dict1['profile_pic_url_hd']).text
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
