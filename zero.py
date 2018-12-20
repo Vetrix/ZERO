@@ -97,6 +97,9 @@ def handle_text_message(event):
 	def ig(username) :
 		url = "https://www.instagram.com/{}"
 		r = requests.get(url.format(username))
+		if r.status_code == 404:
+			return ("Unavailable")
+			
 		html = r.text
 		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
 
@@ -119,6 +122,22 @@ def handle_text_message(event):
 
 		return (dict1['profile_pic_url_hd'])
 		
+	def picg(uri) :
+		url = uri
+		r = requests.get(url)
+		html = r.text
+
+		data = html.split("""og:title" content=\"""")[1].split(" /")[0]
+		return (data)
+		
+	def picgs(uri) :
+		url = uri
+		r = requests.get(url)
+		html = r.text
+
+		data = html.split("""og:image" content=\"""")[1].split("\"")[0]
+		return (data)
+			
 	
 	def tts(word):
 		la ='en'
@@ -316,7 +335,7 @@ def handle_text_message(event):
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
-								"/ox, /tts, /stalkig"))
+								"/ox, /tts, /stalkig, /photoig"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
@@ -406,6 +425,11 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /stalkig {input}'))
 				
+	elif text=='/stalkig':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /photoig {input}'))
+				
 	elif text=='/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -467,6 +491,14 @@ def handle_text_message(event):
 		
 	elif text == '/imagemap':
 		pass
+	
+	elif text[0:].lower().strip().startswith('/photoig '):
+		line_bot_api.reply_message(
+			event.reply_token, [
+			TextSendMessage(picg(split(text))),
+			ImageSendMessage(original_content_url= picgs(split(text)),
+							preview_image_url= picgs(split(text)))
+			])
 	
 	elif text[0:].lower().strip().startswith('/stalkig '):
 		line_bot_api.reply_message(
