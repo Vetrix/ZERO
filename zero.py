@@ -130,8 +130,9 @@ def handle_text_message(event):
 
 		data = json.loads(jsondata)
 		dict1 = data['caption']
-
-		return(dict1)
+		
+		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
+		return(data2 + ": \n" + dict1)
 		
 	def picgs(uri) :
 		url = uri
