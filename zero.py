@@ -21,7 +21,7 @@ from linebot.exceptions import (
 	InvalidSignatureError, LineBotApiError
 )
 from linebot.models import (
-	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, SourceGroup, SourceRoom,
+	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, SourceGroup, SourceRoom,
 	TemplateSendMessage, ConfirmTemplate, MessageTemplateAction,
 	ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URITemplateAction,
 	PostbackTemplateAction, DatetimePickerTemplateAction,
@@ -126,9 +126,12 @@ def handle_text_message(event):
 		url = uri
 		r = requests.get(url)
 		html = r.text
+		jsondata = html.split("""<script type="application/ld+json">""")[1].split("</script>")[0]
 
-		data = html.split("""og:title" content=\"""")[1].split(" /")[0]
-		return (data)
+		data = json.loads(jsondata)
+		dict1 = data['caption']
+
+		return(dict1)
 		
 	def picgs(uri) :
 		url = uri
@@ -137,7 +140,14 @@ def handle_text_message(event):
 
 		data = html.split("""og:image" content=\"""")[1].split("\"")[0]
 		return (data)
-			
+	
+	def vigs(uri) :
+		url = uri
+		r = requests.get(url)
+		html = r.text
+
+		data = html.split("""og:video" content=\"""")[1].split("\"")[0]
+		return (data)	
 	
 	def tts(word):
 		la ='en'
@@ -335,7 +345,8 @@ def handle_text_message(event):
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
-								"/ox, /tts, /stalkig, /photoig"))
+								"/ox, /tts, /stalkig, /photoig, \n"
+								"/videoig"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
@@ -425,7 +436,12 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage('command /stalkig {input}'))
 				
-	elif text=='/stalkig':
+	elif text=='/photoig':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('command /photoig {input}'))
+				
+	elif text=='/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage('command /photoig {input}'))
@@ -491,6 +507,14 @@ def handle_text_message(event):
 		
 	elif text == '/imagemap':
 		pass
+	
+	elif text[0:].lower().strip().startswith('/videoig '):
+		line_bot_api.reply_message(
+			event.reply_token, [
+			TextSendMessage(picg(split(text))),
+			VideoSendMessage(original_content_url= vigs(split(text)),
+							preview_image_url= picgs(split(text)))
+			])
 	
 	elif text[0:].lower().strip().startswith('/photoig '):
 		line_bot_api.reply_message(
