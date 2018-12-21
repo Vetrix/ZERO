@@ -125,6 +125,9 @@ def handle_text_message(event):
 	def picg(uri) :
 		url = uri
 		r = requests.get(url)
+		if r.status_code == 404:
+			return ("Unavailable")
+		
 		html = r.text
 		jsondata = html.split("""<script type="application/ld+json">""")[1].split("</script>")[0]
 
@@ -132,7 +135,7 @@ def handle_text_message(event):
 		dict1 = data['caption']
 		
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
-		return(data2 + ": \n" + dict1)
+		return(data2 + " : \n" + dict1)
 		
 	def picgs(uri) :
 		url = uri
@@ -325,14 +328,14 @@ def handle_text_message(event):
 		else:
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('>_< cannot do...'))
+				TextSendMessage(">_< can't do..."))
 	
 	elif text == '/about':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("Hello, my name is Reika \n"
+				TextSendMessage("Hello, my name is Itsumi \n"
 								"Nice to meet you... \n"
-								"source code: https://github.com/Vetrix/ZERO"))
+								"Creator: https://github.com/Vetrix"))
 	
 	elif text == '/cmd':
 		line_bot_api.reply_message(
@@ -410,62 +413,79 @@ def handle_text_message(event):
 	elif text=='/kbbi':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /kbbi {input}'))
+				TextSendMessage("get meaning of a word from https://kbbi.kemdikbud.go.id/ \n"
+								"command /kbbi {word}"))
 	
 	elif text=='/urban':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /urban {input}'))
+				TextSendMessage("get meaning of a word from https://www.urbandictionary.com/ \n"
+								"command /urban {word}"))
 	
 	elif text=='/ox':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /ox {input}'))
+				TextSendMessage("get meaning of a word from https://www.oxforddictionaries.com/ \n"
+								"command /ox {word}"))
 	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /wolfram {input}'))
+				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
+								"in simple text \n"
+								"command /wolfram {input}"))
 				
 	elif text=='/wolframs':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /wolframs {input}'))
+				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
+								"in image \n"
+								"command /wolframs {input}"))
 				
 	elif text=='/stalkig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /stalkig {input}'))
+				TextSendMessage("get simple description of instagram account and profile picture \n"
+								"command /stalkig {username}"))
 				
 	elif text=='/photoig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /photoig {input}'))
+				TextSendMessage("get photo and description of instagram post \n"
+								"command /photoig {post link}"))
 				
 	elif text=='/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /photoig {input}'))
+				TextSendMessage("get video and description of instagram post \n"
+								"command /videoig {post link}"))
 				
 	elif text=='/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /trans sc={}, to={}, {text}'))
+				TextSendMessage("get translation from https://translate.google.com/ \n"
+								"language code can be seen in /lang command \n"
+								"command /trans sc={language code}, to={language code}, {text}"))
 				
 	elif text=='/tts':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /tts la={}, {text}'))
+				TextSendMessage("get audio file about how a word pronounced in a language \n"
+								"language code can be seen in /lang command \n"
+								"command /tts la={language code}, {text}"))
 	
 	elif text=='/wiki':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /wiki {text}'))
+				TextSendMessage("get https://www.wikipedia.org/ description of something \n"
+								"command /wiki {text}"))
 				
 	elif text=='/wikilang':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('command /wikilang {language_id}'))
+				TextSendMessage("change the language of wikipedia description \n"
+								"language code can be seen in /lang command \n"
+								"command /wikilang {language code}"))
 	
 	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
