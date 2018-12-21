@@ -101,8 +101,9 @@ def handle_text_message(event):
 		data = r.json()
 		dict1 = data['data']
 		dict2 = data['location']
-
-		return (str(dict2['address']) + " prayer time\n"
+		dict3 = data['time']
+		
+		return (str(dict2['address']) + " prayer time " + str(dict3['date']) + "\n"
 				"Fajr				: " + str(dict1['Fajr']) + "\n"
 				"Sunrise	: " + str(dict1['Sunrise']) + "\n"
 				"Dhuhr		: " + str(dict1['Dhuhr']) + "\n"
