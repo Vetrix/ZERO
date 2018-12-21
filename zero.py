@@ -103,12 +103,12 @@ def handle_text_message(event):
 		dict2 = data['location']
 
 		return (str(dict2['address']) + " prayer time\n"
-				"Fajr			: " + str(dict1['Fajr']) + "\n"
+				"Fajr				: " + str(dict1['Fajr']) + "\n"
 				"Sunrise	: " + str(dict1['Sunrise']) + "\n"
 				"Dhuhr		: " + str(dict1['Dhuhr']) + "\n"
-				"Asr			: " + str(dict1['Asr']) + "\n"
+				"Asr				: " + str(dict1['Asr']) + "\n"
 				"Maghrib	: " + str(dict1['Maghrib']) + "\n"
-				"Isha			: " + str(dict1['Isha']))
+				"Isha				: " + str(dict1['Isha']))
 	
 	def ig(username) :
 		url = "https://www.instagram.com/{}"
