@@ -93,7 +93,23 @@ def handle_text_message(event):
 	
 	def force_safe(text):
 		return text.replace('http','https',1)
-		
+	
+	def pt(city) :
+		url = "https://time.siswadi.com/pray/?address={}"
+		r = requests.get(url.format(city))
+
+		data = r.json()
+		dict1 = data['data']
+		dict2 = data['location']
+
+		return (str(dict2['address']) + " prayer time\n"
+				"Fajr    : " + str(dict1['Fajr']) + "\n"
+				"Sunrise : " + str(dict1['Sunrise']) + "\n"
+				"Dhuhr   : " + str(dict1['Dhuhr']) + "\n"
+				"Asr     : " + str(dict1['Asr']) + "\n"
+				"Maghrib : " + str(dict1['Maghrib']) + "\n"
+				"Isha    : " + str(dict1['Isha']) + "\n")
+	
 	def ig(username) :
 		url = "https://www.instagram.com/{}"
 		r = requests.get(url.format(username))
@@ -107,9 +123,9 @@ def handle_text_message(event):
 		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
 		return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
-		"Following : " + str(dict1['edge_follow']['count']) + "\n" +
-		"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
-		"Bio : " + dict1['biography'])
+				"Following : " + str(dict1['edge_follow']['count']) + "\n" +
+				"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
+				"Bio : " + dict1['biography'])
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
@@ -350,7 +366,7 @@ def handle_text_message(event):
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
 								"/ox, /tts, /stalkig, /photoig, \n"
-								"/videoig"))
+								"/videoig, /pt"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
@@ -486,6 +502,12 @@ def handle_text_message(event):
 				TextSendMessage("change the language of wikipedia description \n"
 								"language code can be seen in /lang command \n"
 								"command /wikilang {language code}"))
+								
+	elif text=='/pt':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("get prayer time of your city \n"
+								"command /pt {city}"))
 	
 	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
@@ -583,6 +605,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(split(text)))
+			
+	elif text[0:].lower().strip().startswith('/pt ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(pt(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/trans ') :
 		line_bot_api.reply_message(
