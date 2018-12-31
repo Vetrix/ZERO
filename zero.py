@@ -228,7 +228,7 @@ def handle_text_message(event):
 		ID = movies[0].movieID
 		data = ia.get_movie(ID)
 		
-		return (data['cover url'])
+		return (str(data['cover url']))
 	
 	def ox(keyword):
 		oxdict_appid = ('7dff6c56')
