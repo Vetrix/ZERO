@@ -3,6 +3,7 @@ import os
 import sys
 import tempfile
 from gtts import gTTS
+from imdb import IMDb
 from argparse import ArgumentParser
 from urllib.parse import quote
 from kbbi import KBBI
