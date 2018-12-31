@@ -191,6 +191,44 @@ def handle_text_message(event):
 		url = request.host_url + os.path.join('static', 'tmp', dist_name)
 		return force_safe(url)
 
+	def mreview(movie) :	
+		ia = IMDb()
+		movies = ia.search_movie(movie)
+		
+		ID = movies[0].movieID
+		data = ia.get_movie(ID)
+		
+		#data.infoset2keys (get all info)
+		
+		cast = ''
+		i = 0
+		while (i != 4) :
+			cast = cast + "\n" + str(data['cast'][i]) + " as " +  str(data['cast'][i].notes)
+			i += 1
+		
+		duration = str(data['runtimes']).split("'")[1]
+		
+		year = str(data['year'])
+		
+		plot = str(data['plot'][0].split("::")[0])
+		
+		rate = str(data['rating'])
+		
+		return ("Title			: " + str(movies[0]) + "\n"
+				"Rating			: " + rate + "\n"
+				"Duration		: " + duration + " minutes\n"
+				"Year	: " + year + "\n"
+				"Main Casts : " + cast + "\n"
+				"Plot : \n" + str(plot))
+				
+	def imdbpic(movie) :
+		ia = IMDb()
+		movies = ia.search_movie(movie)
+		
+		ID = movies[0].movieID
+		data = ia.get_movie(ID)
+		
+		return (data['cover url'])
 	
 	def ox(keyword):
 		oxdict_appid = ('7dff6c56')
@@ -367,7 +405,7 @@ def handle_text_message(event):
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
 								"/ox, /tts, /stalkig, /photoig, \n"
-								"/videoig, /pt"))
+								"/videoig, /imdb, /pt"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
@@ -444,6 +482,12 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://www.oxforddictionaries.com/ \n"
 								"command /ox {word}"))
+								
+	elif text=='/imdb':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("get movie review from https://www.imdb.com/ \n"
+								"command /imdb {movie}"))
 	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
@@ -574,6 +618,14 @@ def handle_text_message(event):
 			TextSendMessage(ig(split(text))),
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
+			])
+			
+	elif text[0:].lower().strip().startswith('/imdb '):
+		line_bot_api.reply_message(
+			event.reply_token, [
+			TextSendMessage(mreview(split(text))),
+			ImageSendMessage(original_content_url= imdbpic(split(text)),
+							preview_image_url= imdbpic(split(text)))
 			])
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
