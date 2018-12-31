@@ -215,10 +215,10 @@ def handle_text_message(event):
 		
 		rate = str(data['rating'])
 		
-		return ("Title				: " + str(movies[0]) + "\n"
-				"Rating			: " + rate + "\n"
-				"Duration		: " + duration + " minutes\n"
-				"Year				: " + year + "\n"
+		return ("Title						: " + str(movies[0]) + "\n"
+				"Rating				: " + rate + "\n"
+				"Duration			: " + duration + " minutes\n"
+				"Year						: " + year + "\n"
 				"Main Casts 	: " + cast + "\n"
 				"Plot : \n" + str(plot))
 				
