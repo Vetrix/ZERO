@@ -122,21 +122,21 @@ def handle_text_message(event):
 		else:
 			dict2 = dict1[0]['attributes']['gender']['value']
 			dict3 = dict1[0]['attributes']['age']['value']
-			dict4 = dict1[0]['attributes']['beauty']['value']
+			dict4 = dict1[0]['attributes']['beauty']
 			
 			if (dict2 == 'Male') :
 				dict4 = dict4['male_score']
 			else:
 				dict4 = dict4['female_score']
 			
-			dict5 = dict1[0]['attributes']['ethnicity']
+			dict5 = dict1[0]['attributes']['ethnicity']['value']
 			
 			#dict6 = dict1[0]['attributes']['emotion'] add emotion later
 			
 			return("Gender	: " + str(dict2) + "\n" +
 					"Age	: " + str(dict3) + "\n" +
-					"Beauty	: " +str(dict4) + "\n" +
-					"Ethnicity	: " +str(dict5) + "\n")
+					"Beauty	: " + str(dict4) + "\n" +
+					"Ethnicity	: " + str(dict5))
 	
 	def pt(city) :
 		url = "https://time.siswadi.com/pray/?address={}"
@@ -449,7 +449,7 @@ def handle_text_message(event):
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
 								"/trans, /wiki, /wikilang, /urban, \n"
 								"/ox, /tts, /stalkig, /photoig, \n"
-								"/videoig, /imdb, /pt"))
+								"/videoig, /imdb, /pt, /fdetect"))
 	
 	elif text == '/lang':
 		line_bot_api.reply_message(
