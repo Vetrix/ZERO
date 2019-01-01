@@ -134,7 +134,7 @@ def handle_text_message(event):
 			#dict6 = dict1[0]['attributes']['emotion'] add emotion later
 			
 			return("Gender		: " + str(dict2) + "\n" +
-					"Age			: " + str(dict3) + "\n" +
+					"Age				: " + str(dict3) + "\n" +
 					"Beauty		: " + str(dict4) + "\n" +
 					"Ethnicity	: " + str(dict5))
 	
