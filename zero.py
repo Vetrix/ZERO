@@ -135,7 +135,7 @@ def handle_text_message(event):
 			
 			return("Gender		: " + str(dict2) + "\n" +
 					"Age				: " + str(dict3) + "\n" +
-					"Beauty		: " + str(dict4) + "\n" +
+					"Beauty		: " + str(round(dict4, 2)) + "\n" +
 					"Ethnicity	: " + str(dict5))
 	
 	def pt(city) :
