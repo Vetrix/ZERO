@@ -99,8 +99,10 @@ def handle_text_message(event):
 		http_url = 'https://api-us.faceplusplus.com/facepp/v3/detect'
 		key = "lM4feUDrJJYyKm8s4WvmxgWlVpZE0iNw"
 		secret = "Y5L_l2a87UAtKeFzL-FD8K3C5OwtAbfA"
-		attributes="age,gender,ethnicity,emotion,beauty"
-
+		attributes="age,gender,ethnicity,beauty"
+		
+		#add emotion later in atributes
+		
 		resp = requests.post(http_url,
 			data = { 
 					'api_key': key,
@@ -110,9 +112,31 @@ def handle_text_message(event):
 		)
 
 		r = resp.json()
-		data = str(r['faces'])
-
-		return(data)
+	
+		if (len(r) == 3 ) :
+			return ("Face not detected")
+			
+		dict1 = r['faces']
+		if ((len(dict1) > 1) or (len(dict1) < 1)):
+			return ("Please send picture with one face only")
+		else:
+			dict2 = dict1[0]['attributes']['gender']['value']
+			dict3 = dict1[0]['attributes']['age']['value']
+			dict4 = dict1[0]['attributes']['beauty']['value']
+			
+			if (dict2 == 'Male') :
+				dict4 = dict4['male_score']
+			else:
+				dict4 = dict4['female_score']
+			
+			dict5 = dict1[0]['attributes']['ethnicity']
+			
+			#dict6 = dict1[0]['attributes']['emotion'] add emotion later
+			
+			return("Gender	: " + str(dict2) + "\n" +
+					"Age	: " + str(dict3) + "\n" +
+					"Beauty	: " +str(dict4) + "\n" +
+					"Ethnicity	: " +str(dict5) + "\n")
 	
 	def pt(city) :
 		url = "https://time.siswadi.com/pray/?address={}"
