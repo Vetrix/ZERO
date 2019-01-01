@@ -133,9 +133,9 @@ def handle_text_message(event):
 			
 			#dict6 = dict1[0]['attributes']['emotion'] add emotion later
 			
-			return("Gender	: " + str(dict2) + "\n" +
-					"Age	: " + str(dict3) + "\n" +
-					"Beauty	: " + str(dict4) + "\n" +
+			return("Gender		: " + str(dict2) + "\n" +
+					"Age			: " + str(dict3) + "\n" +
+					"Beauty		: " + str(dict4) + "\n" +
 					"Ethnicity	: " + str(dict5))
 	
 	def pt(city) :
@@ -532,6 +532,12 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("get movie review from https://www.imdb.com/ \n"
 								"command /imdb {movie}"))
+								
+	elif text=='/fdetect':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("get face detection of photo url \n"
+								"command /fdetect {url}"))
 	
 	elif text=='/wolfram':
 		line_bot_api.reply_message(
