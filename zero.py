@@ -95,6 +95,25 @@ def handle_text_message(event):
 	def force_safe(text):
 		return text.replace('http','https',1)
 	
+	def fdetect(url) :
+		http_url = 'https://api-us.faceplusplus.com/facepp/v3/detect'
+		key = "lM4feUDrJJYyKm8s4WvmxgWlVpZE0iNw"
+		secret = "Y5L_l2a87UAtKeFzL-FD8K3C5OwtAbfA"
+		attributes="age,gender,ethnicity,emotion,beauty"
+
+		resp = requests.post(http_url,
+			data = { 
+					'api_key': key,
+					'api_secret': secret,
+					'image_url': url,
+					'return_attributes': attributes}
+		)
+
+		r = resp.json()
+		data = str(r['faces'])
+
+		return(data)
+	
 	def pt(city) :
 		url = "https://time.siswadi.com/pray/?address={}"
 		r = requests.get(url.format(city))
@@ -664,6 +683,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(pt(split(text))))
+			
+	elif text[0:].lower().strip().startswith('/fdetect ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(fdetect(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/trans ') :
 		line_bot_api.reply_message(
