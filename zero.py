@@ -22,13 +22,17 @@ from linebot.exceptions import (
 	InvalidSignatureError, LineBotApiError
 )
 from linebot.models import (
-	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, SourceGroup, SourceRoom,
-	TemplateSendMessage, ConfirmTemplate, MessageTemplateAction,
-	ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URITemplateAction,
-	PostbackTemplateAction, DatetimePickerTemplateAction,
+	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, 
+	SourceUser, SourceGroup, SourceRoom,
+	TemplateSendMessage, ConfirmTemplate, MessageTemplateAction, MessageAction,
+	ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URITemplateAction, URIAction,
+	PostbackTemplateAction, DatetimePickerTemplateAction, DatetimePickerAction,
+	CameraAction, CameraRollAction, LocationAction,
 	CarouselTemplate, CarouselColumn, PostbackEvent,
 	StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
 	ImageMessage, VideoMessage, AudioMessage, FileMessage,
+	FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
+	TextComponent, SpacerComponent, IconComponent, ButtonComponent,
 	VideoSendMessage, AudioSendMessage,
 	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
 )
@@ -66,6 +70,11 @@ def callback():
 	# handle webhook body
 	try:
 		handler.handle(body, signature)
+	except LineBotApiError as e:
+		print("Got exception from LINE Messaging API: %s\n" % e.message)
+		for m in e.error.details:
+			print("  %s: %s" % (m.property, m.message))
+		print("\n")
 	except InvalidSignatureError:
 		abort(400)
 
@@ -421,7 +430,7 @@ def handle_text_message(event):
 		elif isinstance(event.source, SourceRoom):
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage('I am leaving the group...'))
+				TextSendMessage('I am leaving the room...'))
 			line_bot_api.leave_room(event.source.room_id)
 			
 		else:
@@ -442,8 +451,8 @@ def handle_text_message(event):
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave, /lang \n"
 								"/confirm, /buttons, /search image, \n"
-								"/manga \n"
-								"/image_carousel, /imagemap \n"
+								"/manga, /carousel, /flex, \n"
+								"/image_carousel, /quick \n"
 								"\n"
 								"With parameters: \n"
 								"/echo, /kbbi, /wolfram, /wolframs, \n"
@@ -469,7 +478,18 @@ def handle_text_message(event):
 								"https://reverse.photos/"))
 	
 	elif text == '/profile':
-		if isinstance(event.source, SourceGroup):
+		if isinstance(event.source, SourceUser):
+			profile = line_bot_api.get_profile(event.source.user_id)
+			line_bot_api.reply_message(
+				event.reply_token, [
+					TextSendMessage(text='Display name: ' + profile.display_name),
+					TextSendMessage(text='Status message: ' + profile.status_message)])
+		else:
+			line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(text="Bot can't use profile API without user ID"))
+
+		"""if isinstance(event.source, SourceGroup):
 			try:
 				profile = line_bot_api.get_group_member_profile(event.source.group_id, event.source.user_id)
 				result = ("Display name: " + profile.display_name + "\n" +
@@ -507,7 +527,7 @@ def handle_text_message(event):
 				pass
 			line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(result))
+				TextSendMessage(result))"""
 	
 	elif text=='/kbbi':
 		line_bot_api.reply_message(
@@ -628,6 +648,21 @@ def handle_text_message(event):
 			alt_text='Buttons alt text', template=buttons_template)
 		line_bot_api.reply_message(event.reply_token, template_message)
 	
+	elif text == '/carousel':
+		carousel_template = CarouselTemplate(columns=[
+			CarouselColumn(text='hoge1', title='fuga1', actions=[
+				URIAction(label='Go to line.me', uri='https://line.me'),
+				PostbackAction(label='ping', data='ping')
+			]),
+			CarouselColumn(text='hoge2', title='fuga2', actions=[
+				PostbackAction(label='ping with text', data='ping', text='ping'),
+				MessageAction(label='Translate Rice', text='米')
+			]),
+		])
+		template_message = TemplateSendMessage(
+			alt_text='Carousel alt text', template=carousel_template)
+		line_bot_api.reply_message(event.reply_token, template_message)
+	
 	elif text == '/image_carousel':
 		image_carousel_template = ImageCarouselTemplate(columns=[
 			ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
@@ -645,6 +680,141 @@ def handle_text_message(event):
 		
 	elif text == '/imagemap':
 		pass
+	
+	elif text == '/flex':
+		bubble = BubbleContainer(
+			direction='ltr',
+			hero=ImageComponent(
+				url='https://example.com/cafe.jpg',
+				size='full',
+				aspect_ratio='20:13',
+				aspect_mode='cover',
+				action=URIAction(uri='http://example.com', label='label')
+			),
+			body=BoxComponent(
+				layout='vertical',
+				contents=[
+					# title
+					TextComponent(text='Brown Cafe', weight='bold', size='xl'),
+					# review
+					BoxComponent(
+						layout='baseline',
+						margin='md',
+						contents=[
+							IconComponent(size='sm', url='https://example.com/gold_star.png'),
+							IconComponent(size='sm', url='https://example.com/grey_star.png'),
+							IconComponent(size='sm', url='https://example.com/gold_star.png'),
+							IconComponent(size='sm', url='https://example.com/gold_star.png'),
+							IconComponent(size='sm', url='https://example.com/grey_star.png'),
+							TextComponent(text='4.0', size='sm', color='#999999', margin='md',
+										  flex=0)
+						]
+					),
+					# info
+					BoxComponent(
+						layout='vertical',
+						margin='lg',
+						spacing='sm',
+						contents=[
+							BoxComponent(
+								layout='baseline',
+								spacing='sm',
+								contents=[
+									TextComponent(
+										text='Place',
+										color='#aaaaaa',
+										size='sm',
+										flex=1
+									),
+									TextComponent(
+										text='Shinjuku, Tokyo',
+										wrap=True,
+										color='#666666',
+										size='sm',
+										flex=5
+									)
+								],
+							),
+							BoxComponent(
+								layout='baseline',
+								spacing='sm',
+								contents=[
+									TextComponent(
+										text='Time',
+										color='#aaaaaa',
+										size='sm',
+										flex=1
+									),
+									TextComponent(
+										text="10:00 - 23:00",
+										wrap=True,
+										color='#666666',
+										size='sm',
+										flex=5,
+									),
+								],
+							),
+						],
+					)
+				],
+			),
+			footer=BoxComponent(
+				layout='vertical',
+				spacing='sm',
+				contents=[
+					# callAction, separator, websiteAction
+					SpacerComponent(size='sm'),
+					# callAction
+					ButtonComponent(
+						style='link',
+						height='sm',
+						action=URIAction(label='CALL', uri='tel:000000'),
+					),
+					# separator
+					SeparatorComponent(),
+					# websiteAction
+					ButtonComponent(
+						style='link',
+						height='sm',
+						action=URIAction(label='WEBSITE', uri="https://example.com")
+					)
+				]
+			),
+		)
+		message = FlexSendMessage(alt_text="hello", contents=bubble)
+		line_bot_api.reply_message(
+			event.reply_token,
+			message
+		)
+	
+	elif text == '/quick':
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(
+				text='Quick reply',
+				quick_reply=QuickReply(
+					items=[
+						QuickReplyButton(
+							action=PostbackAction(label="label1", data="data1")
+						),
+						QuickReplyButton(
+							action=MessageAction(label="label2", text="text2")
+						),
+						QuickReplyButton(
+							action=DatetimePickerAction(label="label3",
+														data="data3",
+														mode="date")
+						),
+						QuickReplyButton(
+							action=CameraAction(label="label4")
+						),
+						QuickReplyButton(
+							action=CameraRollAction(label="label5")
+						),
+						QuickReplyButton(
+							action=LocationAction(label="label6")
+						),
+					])))	
 	
 	elif text[0:].lower().strip().startswith('/videoig '):
 		line_bot_api.reply_message(
