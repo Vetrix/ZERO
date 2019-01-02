@@ -483,7 +483,6 @@ def handle_text_message(event):
 			try:
 				profile = line_bot_api.get_group_member_profile(event.source.group_id, event.source.user_id)
 				result = ("Display name: " + profile.display_name + "\n" +
-						  "Profile picture: " + profile.picture_url + "\n" +
 						  "User_ID: " + profile.user_id)
 			except LineBotApiError:
 				pass	
@@ -496,8 +495,9 @@ def handle_text_message(event):
 			try:
 				profile = line_bot_api.get_room_member_profile(event.source.room_id, event.source.user_id)
 				result = ("Display name: " + profile.display_name + "\n" +
-						  "Profile picture: " + profile.picture_url + "\n" +
 						  "User_ID: " + profile.user_id)
+				if profile.picture_url :
+					result += "\nProfile picture: " + profile.picture_url 
 			except LineBotApiError:
 				pass	
 			line_bot_api.reply_message(
@@ -509,8 +509,9 @@ def handle_text_message(event):
 			try:
 				profile = line_bot_api.get_profile(event.source.user_id)
 				result = ("Display name: " + profile.display_name + "\n" +
-						  "Profile picture: " + profile.picture_url + "\n" +
 						  "User_ID: " + profile.user_id)
+				if profile.picture_url :
+					result += "\nProfile picture: " + profile.picture_url 
 				if profile.status_message:
 					result += "\n" + "Status message: " + profile.status_message
 			except LineBotApiError:
@@ -524,96 +525,96 @@ def handle_text_message(event):
 			event.reply_token,
 			TextSendMessage(text="Bot can't use profile API without user ID"))
 	
-	elif text=='/kbbi':
+	elif text == '/kbbi':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://kbbi.kemdikbud.go.id/ \n"
 								"command /kbbi {word}"))
 	
-	elif text=='/urban':
+	elif text == '/urban':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://www.urbandictionary.com/ \n"
 								"command /urban {word}"))
 	
-	elif text=='/ox':
+	elif text == '/ox':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://www.oxforddictionaries.com/ \n"
 								"command /ox {word}"))
 								
-	elif text=='/imdb':
+	elif text == '/imdb':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get movie review from https://www.imdb.com/ \n"
 								"command /imdb {movie}"))
 								
-	elif text=='/fdetect':
+	elif text == '/fdetect':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get face detection of photo url \n"
 								"command /fdetect {url}"))
 	
-	elif text=='/wolfram':
+	elif text == '/wolfram':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
 								"in simple text \n"
 								"command /wolfram {input}"))
 				
-	elif text=='/wolframs':
+	elif text == '/wolframs':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
 								"in image \n"
 								"command /wolframs {input}"))
 				
-	elif text=='/stalkig':
+	elif text == '/stalkig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get simple description of instagram account and profile picture \n"
 								"command /stalkig {username}"))
 				
-	elif text=='/photoig':
+	elif text == '/photoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get photo and description of instagram post \n"
 								"command /photoig {post link}"))
 				
-	elif text=='/videoig':
+	elif text == '/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get video and description of instagram post \n"
 								"command /videoig {post link}"))
 				
-	elif text=='/trans':
+	elif text == '/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get translation from https://translate.google.com/ \n"
 								"language code can be seen in /lang command \n"
 								"command /trans sc={language code}, to={language code}, {text}"))
 				
-	elif text=='/tts':
+	elif text == '/tts':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get audio file about how a word pronounced in a language \n"
 								"language code can be seen in /lang command \n"
 								"command /tts la={language code}, {text}"))
 	
-	elif text=='/wiki':
+	elif text == '/wiki':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get https://www.wikipedia.org/ description of something \n"
 								"command /wiki {text}"))
 				
-	elif text=='/wikilang':
+	elif text == '/wikilang':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("change the language of wikipedia description \n"
 								"language code can be seen in /lang command \n"
 								"command /wikilang {language code}"))
 								
-	elif text=='/pt':
+	elif text == '/pt':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get prayer time of your city \n"
