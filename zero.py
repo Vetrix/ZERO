@@ -451,7 +451,7 @@ def handle_text_message(event):
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave, /lang \n"
 								"/confirm, /buttons, /search image, \n"
-								"/image_carousel\n"
+								"/image_carousel, /id\n"
 								"/manga\n" #/quick. /carousel, /flex
 								
 								"\n"
@@ -477,6 +477,19 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("Try this up \n"
 								"https://reverse.photos/"))
+	
+	elif text == '/id':
+		if isinstance(event.source, SourceGroup):
+			profile = event.source.user_id
+			result = profile + "\n" + event.source.group_id
+		elif isinstance(event.source, SourceRoom):
+			profile = event.source.user_id
+			result = profile + "\n" + event.source.room_id
+		else:
+			result = event.source.user_id
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(result))
 	
 	elif text == '/profile':
 		if isinstance(event.source, SourceGroup):
