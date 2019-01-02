@@ -480,10 +480,14 @@ def handle_text_message(event):
 	elif text == '/profile':
 		if isinstance(event.source, SourceUser):
 			profile = line_bot_api.get_profile(event.source.user_id)
+			result = ("Display name: " + profile.display_name + "\n" +
+						  "Profile picture: " + profile.picture_url + "\n" +
+						  "User_ID: " + profile.user_id)
+			result += "\n" + "Status message: " + profile.status_message
+			
 			line_bot_api.reply_message(
 				event.reply_token, [
-					TextSendMessage(text='Display name: ' + profile.display_name),
-					TextSendMessage(text='Status message: ' + profile.status_message)])
+					TextSendMessage(result)])
 		else:
 			line_bot_api.reply_message(
 			event.reply_token,
