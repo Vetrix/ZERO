@@ -695,6 +695,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(ig(split(text))),
+			TextSendMessage(igs(split(text))),
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
 			])
