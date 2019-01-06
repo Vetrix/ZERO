@@ -677,6 +677,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
+			TextSendMessage(vigs(split(text))),
 			VideoSendMessage(original_content_url= vigs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
@@ -685,6 +686,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
+			TextSendMessage(picgs(split(text))),
 			ImageSendMessage(original_content_url= picgs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
