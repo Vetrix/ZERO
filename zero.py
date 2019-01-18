@@ -426,9 +426,7 @@ def handle_text_message(event):
 		return result
 	
 	if text == '/help':
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage('I will be here for you'))
+		quickreply('I will be here for you')
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
