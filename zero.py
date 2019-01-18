@@ -97,6 +97,13 @@ def handle_text_message(event):
 	else:
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
+		
+	def quickreply(*msgs, mode=('text',)*5):
+		"""Reply the message with msgs."""
+		line_bot_api.reply_message(
+			event.reply_token, compose_reply_content(*msgs, mode=mode)
+		)
+
 	
 	def split(text):
 		return text.split(' ', 1)[-1]		
@@ -422,21 +429,15 @@ def handle_text_message(event):
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage('I am leaving the group...'))
+			quickreply('I am leaving the group...')
 			line_bot_api.leave_group(event.source.group_id)
 		
 		elif isinstance(event.source, SourceRoom):
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage('I am leaving the room...'))
+			quickreply('I am leaving the room...')
 			line_bot_api.leave_room(event.source.room_id)
 			
 		else:
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(">_< can't do..."))
+			quickreply(">_< can't do...")
 	
 	elif text == '/about':
 		line_bot_api.reply_message(
