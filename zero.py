@@ -426,7 +426,7 @@ def handle_text_message(event):
 		return result
 	
 	if text == '/help':
-		quickreply('I will be here for you')
+		QuickReply("I will be here for you")
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
