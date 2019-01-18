@@ -34,7 +34,10 @@ from linebot.models import (
 	FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
 	TextComponent, SpacerComponent, IconComponent, ButtonComponent,
 	VideoSendMessage, AudioSendMessage,
-	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent
+	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
+	FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
+	TextComponent, SpacerComponent, IconComponent, ButtonComponent,
+	SeparatorComponent, QuickReply, QuickReplyButton
 )
 
 translator = Translator()
@@ -429,15 +432,21 @@ def handle_text_message(event):
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
-			quickreply('I am leaving the group...')
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('I am leaving the group...'))
 			line_bot_api.leave_group(event.source.group_id)
 		
 		elif isinstance(event.source, SourceRoom):
-			quickreply('I am leaving the room...')
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage('I am leaving the room...'))
 			line_bot_api.leave_room(event.source.room_id)
 			
 		else:
-			quickreply(">_< can't do...")
+			line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(">_< can't do..."))
 	
 	elif text == '/about':
 		line_bot_api.reply_message(
