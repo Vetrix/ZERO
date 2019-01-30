@@ -650,7 +650,7 @@ def handle_text_message(event):
 		bubble = BubbleContainer(
 			direction='ltr',
 			hero=ImageComponent(
-				url='https://img.wongnai.com/p/1920x0/2017/12/30/19f2934940cf47669b2d1336feea0b97.jpg',
+				url='https://globalassets.starbucks.com/assets/71d2dc1df70c41ca91e8aae0b3fd3e36.jpg',
 				size='full',
 				aspect_ratio='4:3',
 				aspect_mode='cover',
@@ -660,18 +660,18 @@ def handle_text_message(event):
 				layout='vertical',
 				contents=[
 					# title
-					TextComponent(text='Brown Cafe', weight='bold', size='xl'),
+					TextComponent(text='Coffee Shop', weight='bold', size='xl'),
 					# review
 					BoxComponent(
 						layout='baseline',
 						margin='md',
 						contents=[
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
-							IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
-							IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
-							TextComponent(text='4.0', size='sm', color='#999999', margin='md',
+							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+							TextComponent(text='5.0', size='sm', color='#FFFF33', margin='md',
 										  flex=0)
 						]
 					),
@@ -733,7 +733,7 @@ def handle_text_message(event):
 					ButtonComponent(
 						style='link',
 						height='sm',
-						action=URIAction(label='CALL', uri='tel:000000'),
+						action=URIAction(label='Americano', uri='tel:000000'),
 					),
 					# separator
 					SeparatorComponent(),
