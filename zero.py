@@ -21,24 +21,7 @@ from linebot import (
 from linebot.exceptions import (
 	InvalidSignatureError, LineBotApiError
 )
-from linebot.models import (
-	MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, VideoSendMessage, 
-	SourceUser, SourceGroup, SourceRoom,
-	TemplateSendMessage, ConfirmTemplate, MessageTemplateAction, MessageAction,
-	ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URITemplateAction, URIAction,
-	PostbackTemplateAction, DatetimePickerTemplateAction, DatetimePickerAction,
-	CameraAction, CameraRollAction, LocationAction,
-	CarouselTemplate, CarouselColumn, PostbackEvent,
-	StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
-	ImageMessage, VideoMessage, AudioMessage, FileMessage,
-	FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
-	TextComponent, SpacerComponent, IconComponent, ButtonComponent,
-	VideoSendMessage, AudioSendMessage,
-	UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
-	FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
-	TextComponent, SpacerComponent, IconComponent, ButtonComponent,
-	SeparatorComponent, QuickReply, QuickReplyButton
-)
+from linebot.models import *
 
 translator = Translator()
 wiki_settings = {}
@@ -457,10 +440,10 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("Without parameters: \n"
-								"/about, /help, /profile, /leave, /lang \n"
-								"/confirm, /buttons, /search image, \n"
+								"/about, /help, /profile, /leave, /lang\n"
+								"/confirm, /buttons, /search image,\n"
 								"/image_carousel, /id\n"
-								"/manga\n" #/quick. /carousel, /flex
+								"/manga, /flex\n" #/quick. /carousel, 
 								
 								"\n"
 								"With parameters: \n"
@@ -663,6 +646,112 @@ def handle_text_message(event):
 			alt_text='Buttons alt text', template=buttons_template)
 		line_bot_api.reply_message(event.reply_token, template_message)
 
+	elif text == '/flex':
+		bubble = BubbleContainer(
+			direction='ltr',
+			hero=ImageComponent(
+				url='https://img.wongnai.com/p/1920x0/2017/12/30/19f2934940cf47669b2d1336feea0b97.jpg',
+				size='full',
+				aspect_ratio='4:3',
+				aspect_mode='cover',
+				action=URIAction(uri='https://github.com/vetrix/zero', label='label')
+			),
+			body=BoxComponent(
+				layout='vertical',
+				contents=[
+					# title
+					TextComponent(text='Brown Cafe', weight='bold', size='xl'),
+					# review
+					BoxComponent(
+						layout='baseline',
+						margin='md',
+						contents=[
+							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+							IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
+							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+							IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
+							TextComponent(text='4.0', size='sm', color='#999999', margin='md',
+										  flex=0)
+						]
+					),
+					# info
+					BoxComponent(
+						layout='vertical',
+						margin='lg',
+						spacing='sm',
+						contents=[
+							BoxComponent(
+								layout='baseline',
+								spacing='sm',
+								contents=[
+									TextComponent(
+										text='Place',
+										color='#aaaaaa',
+										size='sm',
+										flex=1
+									),
+									TextComponent(
+										text='Shinjuku, Tokyo',
+										wrap=True,
+										color='#666666',
+										size='sm',
+										flex=5
+									)
+								],
+							),
+							BoxComponent(
+								layout='baseline',
+								spacing='sm',
+								contents=[
+									TextComponent(
+										text='Time',
+										color='#aaaaaa',
+										size='sm',
+										flex=1
+									),
+									TextComponent(
+										text="10:00 - 23:00",
+										wrap=True,
+										color='#666666',
+										size='sm',
+										flex=5,
+									),
+								],
+							),
+						],
+					)
+				],
+			),
+			footer=BoxComponent(
+				layout='vertical',
+				spacing='sm',
+				contents=[
+					# callAction, separator, websiteAction
+					SpacerComponent(size='sm'),
+					# callAction
+					ButtonComponent(
+						style='link',
+						height='sm',
+						action=URIAction(label='CALL', uri='tel:000000'),
+					),
+					# separator
+					SeparatorComponent(),
+					# websiteAction
+					ButtonComponent(
+						style='link',
+						height='sm',
+						action=URIAction(label='WEBSITE', uri="https://github.com/vetrix/zero")
+					)
+				]
+			),
+		)
+		message = FlexSendMessage(alt_text="hello", contents=bubble)
+		line_bot_api.reply_message(
+			event.reply_token,
+			message
+		)
+		
 	elif text == '/image_carousel':
 		image_carousel_template = ImageCarouselTemplate(columns=[
 			ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
@@ -895,4 +984,4 @@ def handle_beacon(event):
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
 	make_static_tmp_dir()
-app.run(host='0.0.0.0', port=port)
+	app.run(host='0.0.0.0', port=port)
