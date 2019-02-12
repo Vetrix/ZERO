@@ -36,8 +36,9 @@ handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
 def delete(dir):
-	if os.path.exists(dir):
-		shutil.rmtree(dir)
+	shutil.rmtree(dir)
+	os.unlink(dir)
+	assert not os.path.exists(dir)
 	return ("deleted")
 	
 # function for create tmp dir for download content
