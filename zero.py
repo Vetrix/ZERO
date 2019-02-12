@@ -38,7 +38,6 @@ static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 def delete(dir):
 	shutil.rmtree(dir)
 	os.unlink(dir)
-	assert not os.path.exists(dir)
 	return ("deleted")
 	
 # function for create tmp dir for download content
