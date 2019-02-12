@@ -33,9 +33,6 @@ line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9g
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-static_tmp_path = static_tmp_path.replace(' ','_')
-static_tmp_path = static_tmp_path.replace('.','_')
-static_tmp_path = static_tmp_path.replace('/','_')
 
 def delete(temp):
 	os.remove(temp)
