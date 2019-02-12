@@ -34,9 +34,6 @@ line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9g
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-
-def delete():
-	shutil.rmtree()
 	
 # function for create tmp dir for download content
 def make_static_tmp_dir():
@@ -414,9 +411,6 @@ def handle_text_message(event):
 	
 	if text == '/help':
 		QuickReply("I will be here for you")
-	
-	if text == '/delete':
-		shutil.rmtree()
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
