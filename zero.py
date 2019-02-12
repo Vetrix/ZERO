@@ -33,7 +33,13 @@ line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9g
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
+static_tmp_path = static_tmp_path.replace(' ','_')
+static_tmp_path = static_tmp_path.replace('.','_')
+static_tmp_path = static_tmp_path.replace('/','_')
 
+def delete(temp):
+	os.remove(temp)
+	
 # function for create tmp dir for download content
 def make_static_tmp_dir():
 	try:
@@ -446,10 +452,10 @@ def handle_text_message(event):
 								"/manga, /flex\n" #/quick. /carousel, 
 								
 								"\n"
-								"With parameters: \n"
-								"/echo, /kbbi, /wolfram, /wolframs, \n"
-								"/trans, /wiki, /wikilang, /urban, \n"
-								"/ox, /tts, /stalkig, /photoig, \n"
+								"With parameters:\n"
+								"/echo, /kbbi, /wolfram, /wolframs,\n"
+								"/trans, /wiki, /wikilang, /urban,\n"
+								"/ox, /tts, /stalkig, /photoig,\n"
 								"/videoig, /imdb, /pt, /fdetect"))
 	
 	elif text == '/lang':
@@ -671,7 +677,7 @@ def handle_text_message(event):
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
 							IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
-							TextComponent(text='5.0', size='sm', color='#FFFF33', margin='md',
+							TextComponent(text='5.0', size='sm', color='#FFFF00', margin='md',
 										  flex=0)
 						]
 					),
@@ -860,6 +866,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wiki_lang(split(text), set_id=set_id)))
+			
+	elif text[0:].lower().strip().startswith('/delete ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(delete(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
