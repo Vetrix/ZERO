@@ -35,9 +35,8 @@ handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
-def delete(dir):
-	shutil.rmtree(dir[ignore_errors])
-	return ("deleted")
+def delete():
+	shutil.rmtree()
 	
 # function for create tmp dir for download content
 def make_static_tmp_dir():
@@ -415,6 +414,9 @@ def handle_text_message(event):
 	
 	if text == '/help':
 		QuickReply("I will be here for you")
+	
+	if text == '/delete':
+		shutil.rmtree()
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
@@ -865,11 +867,6 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wiki_lang(split(text), set_id=set_id)))
-			
-	elif text[0:].lower().strip().startswith('/delete ') :
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(delete(split(text))))
 			
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
