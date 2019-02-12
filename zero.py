@@ -2,7 +2,7 @@ import errno
 import os
 import sys
 import tempfile
-from shutil import rmtree
+import shutil
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -36,8 +36,7 @@ handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
 def delete(dir):
-	shutil.rmtree(dir)
-	os.unlink(dir)
+	shutil.rmtree(dir[ignore_errors])
 	return ("deleted")
 	
 # function for create tmp dir for download content
