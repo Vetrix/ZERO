@@ -34,6 +34,33 @@ line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9g
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
+
+table = {}
+
+def isibar(isi, set_id):
+	try:
+		table[set_id] = table[set_id] + '\n' + isi
+	except KeyError:
+		table[set_id] = isi
+		
+def geserbar(set_id):
+	try:
+		if "\n" in table[set_id]: 
+			table[set_id] = table[set_id].split('\n', 1)[-1]
+		else:
+			table[set_id] = ""
+		return("Content deleted")
+	except KeyError:
+		return("Table is empty")
+	
+def cetaq(set_id):
+	try:
+		if (table[set_id] == ""):
+			return("Table is empty")
+		else:
+			return(table[set_id])
+	except KeyError:
+		return("Table is empty")
 	
 # function for create tmp dir for download content
 def make_static_tmp_dir():
@@ -411,6 +438,16 @@ def handle_text_message(event):
 	
 	if text == '/help':
 		QuickReply("I will be here for you")
+		
+	elif text == '/nextab':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(geserbar(set_id=set_id)))
+				
+	elif text == '/printab':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage(cetaq(set_id=set_id)))
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
@@ -861,6 +898,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wiki_lang(split(text), set_id=set_id)))
+			
+	elif text[0:].lower().strip().startswith('/plustab ') :
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(isibar(split(text), set_id=set_id)))
 			
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
