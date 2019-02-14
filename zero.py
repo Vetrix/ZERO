@@ -1,4 +1,7 @@
-import os, errno, tempfile, json, requests, pafy, wikipedia, sys
+import errno
+import os
+import sys
+import tempfile
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -7,6 +10,11 @@ from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
 from flask import Flask, request, abort
+import json
+import requests
+import wikipedia
+import pafy
+
 
 from linebot import (
 	LineBotApi, WebhookHandler
