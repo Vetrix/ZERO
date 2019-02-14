@@ -202,15 +202,21 @@ def handle_text_message(event):
 			return ("Unavailable")
 		
 		html = r.text
-		jsondata = html.split("""<script type="application/ld+json">""")[1].split("</script>")[0]
-
-		data = json.loads(jsondata)
-		dict1 = data['caption']
 		
-		dict1 = dict1[:1900]
+		try:
+			jsondata = html.split("""<script type="application/ld+json">""")[1].split("</script>")[0]
+			
+			data = json.loads(jsondata)
+			dict1 = data['caption']
+
+		except IndexError:
+			jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
+
+			data = json.loads(jsondata)
+			dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_media_to_caption']['edges'][0]['node']['text']
 		
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
-		return(data2 + " : \n" + dict1 + "\n...")
+		return(data2 + " : \n" + dict1)
 		
 	def picgs(uri) :
 		url = uri
