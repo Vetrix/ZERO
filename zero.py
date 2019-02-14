@@ -207,12 +207,10 @@ def handle_text_message(event):
 		data = json.loads(jsondata)
 		dict1 = data['caption']
 		
-		dict1 = dict1[:2000]
-		if not dict1.endswith('.'):
-			dict1 = dict1[:dict1.rfind('.')+1]
+		dict1 = dict1[:1900]
 		
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
-		return(data2 + " : \n" + dict1)
+		return(data2 + " : \n" + dict1 + "\n...")
 		
 	def picgs(uri) :
 		url = uri
@@ -458,7 +456,7 @@ def handle_text_message(event):
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave,\n"
 								"/confirm, /buttons,\n"
-								"/image_carousel,/lang\n"
+								"/image_carousel, /lang\n"
 								"/flex\n"
 								
 								"\n"
