@@ -1,7 +1,4 @@
-import errno
-import os
-import sys
-import tempfile
+import errno, os, sys, tempfile, requests, json, wikipedia, pafy
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -10,10 +7,6 @@ from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
 from flask import Flask, request, abort
-import json
-import requests
-import wikipedia
-import pafy
 
 
 from linebot import (
@@ -84,7 +77,8 @@ def handle_text_message(event):
 	else:
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
-	
+
+		
 	def quickreply(*msgs, mode=('text',)*5):
 		"""Reply the message with msgs."""
 		line_bot_api.reply_message(
@@ -466,7 +460,7 @@ def handle_text_message(event):
 								"/about, /help, /profile, /leave,\n"
 								"/confirm, /buttons,\n"
 								"/image_carousel,/lang\n"
-								"/flex\n" #/quick. /carousel, 
+								"/flex\n"
 								
 								"\n"
 								"With parameters:\n"
@@ -800,7 +794,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(ig(split(text))),
-			TextSendMessage(igs(shorten(split(text)))),
+			TextSendMessage(shorten(igs(split(text)))),
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
 			])
