@@ -8,3 +8,5 @@ wikipedia
 gTTS==2.0.3
 gTTS-token==1.1.3
 IMDbPY==6.6 
+bs4
+pafy
