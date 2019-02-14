@@ -1,4 +1,7 @@
-import errno, os, sys, tempfile, requests, json, wikipedia, pafy
+import os
+import sys
+import tempfile
+
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -6,6 +9,12 @@ from urllib.parse import quote
 from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
+
+import requests
+import wikipedia
+import json
+import pafy
+
 from flask import Flask, request, abort
 
 
