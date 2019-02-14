@@ -1,4 +1,4 @@
-import os, errno, logging, tempfile, json, requests, pafy, random, wikipedia, deviantart, sys, pdfcrowd, shutil, humanfriendly
+import os, errno, tempfile, json, requests, pafy, wikipedia, sys
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -7,7 +7,6 @@ from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
 from flask import Flask, request, abort
-from bs4 import BeautifulSoup, SoupStrainer
 
 from linebot import (
 	LineBotApi, WebhookHandler
@@ -86,7 +85,8 @@ def handle_text_message(event):
 
 	
 	def split(text):
-		return text.split(' ', 1)[-1]		
+		return text.split(' ', 1)[-1]	
+	
 	
 	def shorten(url):
 		api_key = 'AIzaSyB2JuzKCAquSRSeO9eiY6iNE9RMoZXbrjo'
