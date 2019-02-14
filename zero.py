@@ -77,14 +77,7 @@ def handle_text_message(event):
 	else:
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
-
-		
-	def quickreply(*msgs, mode=('text',)*5):
-		"""Reply the message with msgs."""
-		line_bot_api.reply_message(
-			event.reply_token, compose_reply_content(*msgs, mode=mode)
-		)
-
+	
 	
 	def split(text):
 		return text.split(' ', 1)[-1]	
@@ -107,7 +100,7 @@ def handle_text_message(event):
 				"Views: " + str(video.viewcount) + "\n"
 				"Likes: " + str(video.likes) + "\n"
 				"Dislikes: " + str(video.dislikes) + "\n"
-				"Duration: " + str(video.duration) + "\n"
+				"Duration: " + video.duration + "\n"
 				"Videodl: "+ shorten(best.url) + "\n"
 				"Audiodl: " + shorten(bestaudio.url))
 	
@@ -426,7 +419,9 @@ def handle_text_message(event):
 		return result
 	
 	if text == '/help':
-		QuickReply("I will be here for you")
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("I will be here for you"))
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
