@@ -455,14 +455,15 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("Without parameters: \n"
-								"/about, /help, /profile, /leave, /lang\n"
-								"/confirm, /buttons, /search image,\n"
-								"/image_carousel, /id\n"
-								"/manga, /flex\n" #/quick. /carousel, 
+								"/about, /help, /profile, /leave,\n"
+								"/confirm, /buttons,\n"
+								"/image_carousel,/lang\n"
+								"/flex\n" #/quick. /carousel, 
 								
 								"\n"
 								"With parameters:\n"
-								"/echo, /kbbi, /wolfram, /wolframs,\n"
+								"/echo, /kbbi, /wolfram,\n"
+								"/wolframs, /yt,\n"
 								"/trans, /wiki, /wikilang, /urban,\n"
 								"/ox, /tts, /stalkig, /photoig,\n"
 								"/videoig, /imdb, /pt, /fdetect"))
@@ -472,28 +473,6 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("Language for translation see here \n"
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
-	
-	elif text == '/manga':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("mangaku.in"))
-	
-	elif text == '/search image':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage("Try this up \n"
-								"https://reverse.photos/"))
-	
-	elif text == '/id':
-		if isinstance(event.source, SourceGroup):
-			result = "Group ID : " + event.source.group_id
-		elif isinstance(event.source, SourceRoom):
-			result = "Room ID : " + event.source.room_id
-		else:
-			result = "User ID : " + event.source.user_id
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(result))
 	
 	elif text == '/profile':
 		if isinstance(event.source, SourceGroup):
@@ -585,7 +564,13 @@ def handle_text_message(event):
 				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
 								"in image \n"
 								"command /wolframs {input}"))
-				
+	
+	elif text == '/yt':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("get title, views, likes, etc. from youtube video url \n"
+								"command /yt {url}"))
+	
 	elif text == '/stalkig':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -819,6 +804,11 @@ def handle_text_message(event):
 			ImageSendMessage(original_content_url= imdbpic(split(text)),
 							preview_image_url= imdbpic(split(text)))
 			])
+	
+	elif text[0:].lower().strip().startswith('/yt '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(ytdl(split(text))))
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
