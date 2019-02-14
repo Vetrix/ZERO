@@ -1,8 +1,4 @@
-import errno
-import os
-import sys
-import tempfile
-import shutil
+import os, errno, logging, tempfile, json, requests, pafy, random, wikipedia, deviantart, sys, pdfcrowd, shutil, humanfriendly
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
@@ -10,11 +6,8 @@ from urllib.parse import quote
 from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
-import requests
-import wikipedia
-import json
-
 from flask import Flask, request, abort
+from bs4 import BeautifulSoup, SoupStrainer
 
 from linebot import (
 	LineBotApi, WebhookHandler
@@ -34,33 +27,6 @@ line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9g
 handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-
-table = {}
-
-def isibar(isi, set_id):
-	try:
-		table[set_id] = table[set_id] + '\n' + isi
-	except KeyError:
-		table[set_id] = isi
-		
-def geserbar(set_id):
-	try:
-		if "\n" in table[set_id]: 
-			table[set_id] = table[set_id].split('\n', 1)[-1]
-		else:
-			table[set_id] = ""
-		return("Content deleted")
-	except KeyError:
-		return("Table is empty")
-	
-def cetaq(set_id):
-	try:
-		if (table[set_id] == ""):
-			return("Table is empty")
-		else:
-			return(table[set_id])
-	except KeyError:
-		return("Table is empty")
 	
 # function for create tmp dir for download content
 def make_static_tmp_dir():
@@ -111,7 +77,7 @@ def handle_text_message(event):
 	else:
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
-		
+	
 	def quickreply(*msgs, mode=('text',)*5):
 		"""Reply the message with msgs."""
 		line_bot_api.reply_message(
@@ -121,6 +87,27 @@ def handle_text_message(event):
 	
 	def split(text):
 		return text.split(' ', 1)[-1]		
+	
+	def shorten(url):
+		api_key = 'AIzaSyB2JuzKCAquSRSeO9eiY6iNE9RMoZXbrjo'
+		req_url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + api_key
+		payload = {'longUrl': url}
+		headers = {'content-type': 'application/json'}
+		r = requests.post(req_url, data=json.dumps(payload), headers=headers)
+		resp = json.loads(r.text)
+		return resp['id']
+
+	def ytdl(url):
+		video = pafy.new(url)
+		best = video.getbest(preftype="mp4")
+		bestaudio = video.getbestaudio(preftype="m4a")
+		return ("Title: " + video.title +"\n"
+				"Views: " + str(video.viewcount) + "\n"
+				"Likes: " + str(video.likes) + "\n"
+				"Dislikes: " + str(video.dislikes) + "\n"
+				"Duration: " + str(video.duration) + "\n"
+				"Videodl: "+ shorten(best.url) + "\n"
+				"Audiodl: " + shorten(bestaudio.url))
 	
 	def force_safe(text):
 		return text.replace('http','https',1)
@@ -438,16 +425,6 @@ def handle_text_message(event):
 	
 	if text == '/help':
 		QuickReply("I will be here for you")
-		
-	elif text == '/nextab':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(geserbar(set_id=set_id)))
-				
-	elif text == '/printab':
-		line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(cetaq(set_id=set_id)))
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
@@ -812,7 +789,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
-			TextSendMessage(vigs(split(text))),
+			TextSendMessage(shorten(vigs(split(text)))),
 			VideoSendMessage(original_content_url= vigs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
@@ -821,7 +798,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
-			TextSendMessage(picgs(split(text))),
+			TextSendMessage(shorten(picgs(split(text)))),
 			ImageSendMessage(original_content_url= picgs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
@@ -830,7 +807,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(ig(split(text))),
-			TextSendMessage(igs(split(text))),
+			TextSendMessage(igs(shorten(split(text)))),
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
 			])
@@ -898,11 +875,6 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(wiki_lang(split(text), set_id=set_id)))
-			
-	elif text[0:].lower().strip().startswith('/plustab ') :
-		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(isibar(split(text), set_id=set_id)))
 			
 	elif text[0:].lower().strip().startswith('/test ') :
 		line_bot_api.reply_message(
