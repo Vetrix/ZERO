@@ -182,7 +182,6 @@ def handle_text_message(event):
 		api = tweepy.API(auth)
 		data1 = api.get_status(query).user.name
 		data2 = api.get_status(query).text
-		data2 = data2.rsplit(' ', 1)[0]
 		
 		return (data1 + ' on Twitter:\n' + data2)
 	
