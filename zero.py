@@ -167,6 +167,25 @@ def handle_text_message(event):
 				"Maghrib	: " + str(dict1['Maghrib']) + "\n"
 				"Isha				: " + str(dict1['Isha']))
 	
+	def twt(query):
+		query = query.split('/', 5)[-1]
+		query = query.split('/')[0]
+		
+		access_token = ('1084471906248445952-3aN04mwGh4Y3VKUXFVV1YIfiC6WPVB')
+		access_token_secret = ('XsRaIf04Te3AldW5mRFz1kgaT1ZyyXWNaDOlK1GKivDUE')
+		consumer_key = ('u1CBf3TrAu1BDp7qsAH2GbSwl')
+		consumer_secret = ('P2vMIp4vSuM7Q1PdscyjAE8eMcoROCIBY5mZ4H5WHQXPxWbcwy')
+		
+		auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+		auth.set_access_token(access_token, access_token_secret)
+
+		api = tweepy.API(auth)
+		data1 = api.get_status(query).user.name
+		data2 = api.get_status(query).text
+		data2 = data2.rsplit(' ', 1)[0]
+		
+		return (data1 + ' on Twitter:\n' + data2)
+	
 	def ig(username) :
 		url = "https://www.instagram.com/{}"
 		r = requests.get(url.format(username))
@@ -345,6 +364,22 @@ def handle_text_message(event):
 		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
 		return url.format(quote(query), wolfram_appid)
 	
+	def ytskip(query):
+		time = '0s'
+		url = 'https://youtube.com/watch?v={}&t={}'
+		
+		if query[0:].lower().strip().startswith('t='):
+			time = query.split(', ', 1)[0]
+			time = time.split('t=', 1)[-1]
+			query = query.split(', ', 1)[1]
+			
+		query = query.split('/', 3)[-1]
+		if query[0:].lower().strip().startswith('watch'):
+			query = query.split('v=', 1)[1]
+			query = query.split('/')[0]
+		
+		return(url.format(quote(query), time))
+	
 	def trans(word):
 		sc = 'en'
 		to = 'id'
@@ -474,8 +509,8 @@ def handle_text_message(event):
 								
 								"\n"
 								"With parameters:\n"
-								"/echo, /kbbi, /wolfram,\n"
-								"/wolframs, /yt,\n"
+								"/echo, /kbbi, /twt, /wolfram,\n"
+								"/wolframs, /yt, /ytskip,\n"
 								"/trans, /wiki, /wikilang, /urban,\n"
 								"/ox, /tts, /stalkig, /photoig,\n"
 								"/videoig, /imdb, /pt, /fdetect"))
@@ -580,27 +615,39 @@ def handle_text_message(event):
 	elif text == '/yt':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("get title, views, likes, etc. from youtube video url \n"
+				TextSendMessage("get title, views, likes, etc. from youtube video url\n"
 								"command /yt {url}"))
+								
+	elif text == '/yt':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("skip youtube video to certain timestamp\n"
+								"command /ytskip t={time}, {url}"))
 	
 	elif text == '/stalkig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("get simple description of instagram account and profile picture \n"
+				TextSendMessage("get simple description of instagram account and profile picture\n"
 								"command /stalkig {username}"))
 				
 	elif text == '/photoig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("get photo and description of instagram post \n"
+				TextSendMessage("get photo and description of instagram post\n"
 								"command /photoig {post link}"))
 				
 	elif text == '/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage("get video and description of instagram post \n"
+				TextSendMessage("get video and description of instagram post\n"
 								"command /videoig {post link}"))
-				
+	
+	elif text == '/twt':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("get twitter status (tweet) from url\n"
+								"command /twt {url}"))
+	
 	elif text == '/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
@@ -808,7 +855,12 @@ def handle_text_message(event):
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
 			])
-			
+	
+	elif text[0:].lower().strip().startswith('/twt '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(twt(split(text))))
+	
 	elif text[0:].lower().strip().startswith('/imdb '):
 		line_bot_api.reply_message(
 			event.reply_token, [
@@ -821,6 +873,11 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token,
 			TextSendMessage(ytdl(split(text))))
+			
+	elif text[0:].lower().strip().startswith('/ytskip '):
+		line_bot_api.reply_message(
+			event.reply_token,
+			TextSendMessage(ytskip(split(text))))
 	
 	elif text[0:].lower().strip().startswith('/wolfram '):
 		line_bot_api.reply_message(
