@@ -1,4 +1,4 @@
-import errno, os, sys, tempfile, requests, json, wikipedia, pafy
+import errno, os, sys, tempfile, requests, json, wikipedia, pafy, tweepy
 from gtts import gTTS
 from imdb import IMDb
 from argparse import ArgumentParser
