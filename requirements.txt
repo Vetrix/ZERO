@@ -10,3 +10,4 @@ gTTS-token==1.1.3
 IMDbPY==6.6
 youtube-dl
 pafy==0.5.4
+tweepy
