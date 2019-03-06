@@ -77,12 +77,7 @@ def handle_text_message(event):
 	else:
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
-	
-	
-	def split(text):
-		return text.split(' ', 1)[-1]	
-	
-	
+
 	def shorten(url):
 		api_key = 'AIzaSyB2JuzKCAquSRSeO9eiY6iNE9RMoZXbrjo'
 		req_url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + api_key
@@ -90,7 +85,25 @@ def handle_text_message(event):
 		headers = {'content-type': 'application/json'}
 		r = requests.post(req_url, data=json.dumps(payload), headers=headers)
 		resp = json.loads(r.text)
-		return resp['id']
+		return resp['id']		
+	
+	def prof():
+		result = ("Display name: " + subject.display_name + "\n"
+				  "User_ID: " + subject.user_id)
+		if subject.picture_url :
+			result += "\nProfile picture: " + shorten(subject.picture_url)
+		try:
+			profile = line_bot_api.get_profile(event.source.user_id)
+			if profile.status_message:
+				result += "\n" + "Status message: " + profile.status_message
+		except LineBotApiError:
+			pass
+		
+		return(result)
+	
+	def split(text):
+		return text.split(' ', 1)[-1]	
+
 
 	def ytdl(url):
 		video = pafy.new(url)
@@ -527,51 +540,10 @@ def handle_text_message(event):
 								"https://github.com/Vetrix/ZERO/blob/master/Lang.txt"))
 	
 	elif text == '/profile':
-		if isinstance(event.source, SourceGroup):
-			try:
-				profile = line_bot_api.get_group_member_profile(event.source.group_id, event.source.user_id)
-				result = ("Display name: " + profile.display_name + "\n" +
-						  "User_ID: " + profile.user_id)
-			except LineBotApiError:
-				pass	
-			line_bot_api.reply_message(
+		line_bot_api.reply_message(
 				event.reply_token,
-				TextSendMessage(result))
-			
-		
-		elif isinstance(event.source, SourceRoom):
-			try:
-				profile = line_bot_api.get_room_member_profile(event.source.room_id, event.source.user_id)
-				result = ("Display name: " + profile.display_name + "\n" +
-						  "User_ID: " + profile.user_id)
-				if profile.picture_url :
-					result += "\nProfile picture: " + profile.picture_url 
-			except LineBotApiError:
-				pass	
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(result))
-			
-				
-		elif isinstance(event.source, SourceUser):
-			try:
-				profile = line_bot_api.get_profile(event.source.user_id)
-				result = ("Display name: " + profile.display_name + "\n" +
-						  "User_ID: " + profile.user_id)
-				if profile.picture_url :
-					result += "\nProfile picture: " + profile.picture_url 
-				if profile.status_message:
-					result += "\n" + "Status message: " + profile.status_message
-			except LineBotApiError:
-				pass
-			line_bot_api.reply_message(
-				event.reply_token,
-				TextSendMessage(result))
+				TextSendMessage(prof()))
 
-		else:
-			line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(text="Bot can't use profile API without user ID"))
 	
 	elif text == '/kbbi':
 		line_bot_api.reply_message(
