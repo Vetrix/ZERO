@@ -961,6 +961,18 @@ def handle_sticker_message(event):
 # Other Message Type
 @handler.add(MessageEvent, message=(ImageMessage, VideoMessage, AudioMessage))
 def handle_content_message(event):
+	if isinstance(event.source, SourceGroup):
+		subject = line_bot_api.get_group_member_profile(event.source.group_id,
+														event.source.user_id)
+		set_id = event.source.group_id
+	elif isinstance(event.source, SourceRoom):
+		subject = line_bot_api.get_room_member_profile(event.source.room_id,
+                                                   event.source.user_id)
+		set_id = event.source.room_id
+	else:
+		subject = line_bot_api.get_profile(event.source.user_id)
+		set_id = event.source.user_id
+		
 	try :
 		if save_file[set_id] :
 			if isinstance(event.message, ImageMessage):
@@ -992,6 +1004,18 @@ def handle_content_message(event):
 	
 @handler.add(MessageEvent, message=FileMessage)
 def handle_file_message(event):
+	if isinstance(event.source, SourceGroup):
+		subject = line_bot_api.get_group_member_profile(event.source.group_id,
+														event.source.user_id)
+		set_id = event.source.group_id
+	elif isinstance(event.source, SourceRoom):
+		subject = line_bot_api.get_room_member_profile(event.source.room_id,
+                                                   event.source.user_id)
+		set_id = event.source.room_id
+	else:
+		subject = line_bot_api.get_profile(event.source.user_id)
+		set_id = event.source.user_id
+	
 	try :
 		if save_file[set_id] :
 			message_content = line_bot_api.get_message_content(event.message.id)
