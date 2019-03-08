@@ -19,7 +19,7 @@ from linebot.models import *
 
 translator = Translator()
 wiki_settings = {}
-
+save_file = {}
 
 app = Flask(__name__)
 
@@ -396,7 +396,11 @@ def handle_text_message(event):
 			query = query.split('v=', 1)[1]
 			query = query.split('/')[0]
 		
-		return(url.format(quote(query), time))
+		result = url.format(quote(query), time)
+		if ((len(result)) < 44) or ((len(result)) > 54):
+			result = "Wrong format"
+		
+		return(result)
 	
 	def trans(word):
 		sc = 'en'
@@ -521,7 +525,7 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("Without parameters: \n"
 								"/about, /help, /profile, /leave,\n"
-								"/confirm, /buttons,\n"
+								"/confirm, /buttons, /on, /off,\n"
 								"/image_carousel, /lang\n"
 								"/flex\n"
 								
@@ -543,7 +547,18 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage(prof()))
-
+				
+	elif text == '/on':
+		save_file[set_id] = True
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Save file on"))
+				
+	elif text == '/off':
+		save_file[set_id] = False
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Save file off"))
 	
 	elif text == '/kbbi':
 		line_bot_api.reply_message(
@@ -595,7 +610,7 @@ def handle_text_message(event):
 				TextSendMessage("get title, views, likes, etc. from youtube video url\n"
 								"command /yt {url}"))
 								
-	elif text == '/yt':
+	elif text == '/ytskip':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("skip youtube video to certain timestamp\n"
@@ -946,48 +961,56 @@ def handle_sticker_message(event):
 # Other Message Type
 @handler.add(MessageEvent, message=(ImageMessage, VideoMessage, AudioMessage))
 def handle_content_message(event):
-	if isinstance(event.message, ImageMessage):
-		ext = 'jpg'
-	elif isinstance(event.message, VideoMessage):
-		ext = 'mp4'
-	elif isinstance(event.message, AudioMessage):
-		ext = 'm4a'
-	else:
-		return
+	try :
+		if save_file[set_id] :
+			if isinstance(event.message, ImageMessage):
+				ext = 'jpg'
+			elif isinstance(event.message, VideoMessage):
+				ext = 'mp4'
+			elif isinstance(event.message, AudioMessage):
+				ext = 'm4a'
+			else:
+				return
 
-	message_content = line_bot_api.get_message_content(event.message.id)
-	with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
-		for chunk in message_content.iter_content():
-			tf.write(chunk)
-		tempfile_path = tf.name
+			message_content = line_bot_api.get_message_content(event.message.id)
+			with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix=ext + '-', delete=False) as tf:
+				for chunk in message_content.iter_content():
+					tf.write(chunk)
+				tempfile_path = tf.name
 
-	dist_path = tempfile_path + '.' + ext
-	dist_name = os.path.basename(dist_path)
-	os.rename(tempfile_path, dist_path)
+			dist_path = tempfile_path + '.' + ext
+			dist_name = os.path.basename(dist_path)
+			os.rename(tempfile_path, dist_path)
+
+			line_bot_api.reply_message(
+				event.reply_token, [
+					TextSendMessage(text='Save content.'),
+					TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+				])
+	except KeyError:
+		save_file[set_id] = False
 	
-	line_bot_api.reply_message(
-		event.reply_token, [
-			TextSendMessage(text='Save content.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
-		])
-		
 @handler.add(MessageEvent, message=FileMessage)
 def handle_file_message(event):
-	message_content = line_bot_api.get_message_content(event.message.id)
-	with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='file-', delete=False) as tf:
-		for chunk in message_content.iter_content():
-			tf.write(chunk)
-		tempfile_path = tf.name
-	
-	dist_path = tempfile_path + '-' + event.message.file_name
-	dist_name = os.path.basename(dist_path)
-	os.rename(tempfile_path, dist_path)
-	
-	line_bot_api.reply_message(
-		event.reply_token, [
-			TextSendMessage(text='Save file.'),
-			TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
-		])
+	try :
+		if save_file[set_id] :
+			message_content = line_bot_api.get_message_content(event.message.id)
+			with tempfile.NamedTemporaryFile(dir=static_tmp_path, prefix='file-', delete=False) as tf:
+				for chunk in message_content.iter_content():
+					tf.write(chunk)
+				tempfile_path = tf.name
+			
+			dist_path = tempfile_path + '-' + event.message.file_name
+			dist_name = os.path.basename(dist_path)
+			os.rename(tempfile_path, dist_path)
+			
+			line_bot_api.reply_message(
+				event.reply_token, [
+					TextSendMessage(text='Save file.'),
+					TextSendMessage(text=request.host_url + os.path.join('static', 'tmp', dist_name))
+				])
+	except KeyError:
+		save_file[set_id] = False
 		
 @handler.add(FollowEvent)
 def handle_follow(event):
