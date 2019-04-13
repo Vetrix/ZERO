@@ -231,7 +231,7 @@ def handle_text_message(event):
 		return (dict1['profile_pic_url_hd'])
 		
 	def picg(uri) :
-		url = uri
+		url = split(uri)
 		r = requests.get(url)
 		if r.status_code == 404:
 			return ("Unavailable")
@@ -266,13 +266,25 @@ def handle_text_message(event):
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
 		return(data2 + " : \n" + dict1)
 		
-	def picgs(uri) :
-		url = uri
+	def picgs(query) :
+		number = 0
+		
+		if query[0:].lower().strip().startswith('p'):
+			number = query.split(' ', 1)[0]
+			number = number.split('p', 1)[-1]
+			query = query.split(' ', 1)[1]
+		
+		number = int(number)
+		number = number - 1
+		
+		url = query
 		r = requests.get(url)
 		html = r.text
+		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
+		data = json.loads(jsondata)
 
-		data = html.split("""og:image" content=\"""")[1].split("\"")[0]
-		return (data)
+		dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_sidecar_to_children']['edges'][number]['node']['display_url']
+		return (dict1)
 	
 	def vigs(uri) :
 		url = uri
@@ -630,7 +642,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get photo and description of instagram post\n"
-								"command /photoig {post link}"))
+								"command /photoig p{no.} {post link}"))
 				
 	elif text == '/videoig':
 		line_bot_api.reply_message(
