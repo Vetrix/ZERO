@@ -283,7 +283,12 @@ def handle_text_message(event):
 		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 		data = json.loads(jsondata)
 
-		dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_sidecar_to_children']['edges'][number]['node']['display_url']
+		dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']
+		try:
+			dict1= dict1['edge_sidecar_to_children']['edges'][number]['node']['display_url']
+		except KeyError:
+			dict1= dict1['display_url']
+			
 		return (dict1)
 	
 	def vigs(uri) :
