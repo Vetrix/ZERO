@@ -78,8 +78,8 @@ def handle_text_message(event):
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
 
-### should get new api key
-"""	
+	### should get new api key
+	"""	
 	def shorten(url):
 		api_key = 'AIzaSyB2JuzKCAquSRSeO9eiY6iNE9RMoZXbrjo'
 		req_url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + api_key
@@ -88,7 +88,9 @@ def handle_text_message(event):
 		r = requests.post(req_url, data=json.dumps(payload), headers=headers)
 		resp = json.loads(r.text)
 		return resp['id']		
-"""
+	"""
+
+
 	def prof():
 		result = ("Display name: " + subject.display_name + "\n"
 				  "User_ID: " + subject.user_id)
