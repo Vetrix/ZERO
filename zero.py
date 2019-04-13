@@ -78,6 +78,8 @@ def handle_text_message(event):
 		subject = line_bot_api.get_profile(event.source.user_id)
 		set_id = event.source.user_id
 
+### should get new api key
+"""	
 	def shorten(url):
 		api_key = 'AIzaSyB2JuzKCAquSRSeO9eiY6iNE9RMoZXbrjo'
 		req_url = 'https://www.googleapis.com/urlshortener/v1/url?key=' + api_key
@@ -86,12 +88,12 @@ def handle_text_message(event):
 		r = requests.post(req_url, data=json.dumps(payload), headers=headers)
 		resp = json.loads(r.text)
 		return resp['id']		
-	
+"""
 	def prof():
 		result = ("Display name: " + subject.display_name + "\n"
 				  "User_ID: " + subject.user_id)
 		if subject.picture_url :
-			result += "\nProfile picture: " + shorten(subject.picture_url)
+			result += "\nProfile picture: " + subject.picture_url
 		try:
 			profile = line_bot_api.get_profile(event.source.user_id)
 			if profile.status_message:
@@ -114,8 +116,8 @@ def handle_text_message(event):
 				"Likes: " + str(video.likes) + "\n"
 				"Dislikes: " + str(video.dislikes) + "\n"
 				"Duration: " + video.duration + "\n"
-				"Videodl: "+ shorten(best.url) + "\n"
-				"Audiodl: " + shorten(bestaudio.url))
+				"Videodl: "+ best.url + "\n"
+				"Audiodl: " + bestaudio.url)
 	
 	def force_safe(text):
 		return text.replace('http','https',1)
@@ -825,7 +827,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
-			TextSendMessage(shorten(vigs(split(text)))),
+			TextSendMessage(vigs(split(text))),
 			VideoSendMessage(original_content_url= vigs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
@@ -834,7 +836,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(picg(split(text))),
-			TextSendMessage(shorten(picgs(split(text)))),
+			TextSendMessage(picgs(split(text))),
 			ImageSendMessage(original_content_url= picgs(split(text)),
 							preview_image_url= picgs(split(text)))
 			])
@@ -843,7 +845,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 			event.reply_token, [
 			TextSendMessage(ig(split(text))),
-			TextSendMessage(shorten(igs(split(text)))),
+			TextSendMessage(igs(split(text))),
 			ImageSendMessage(original_content_url= igs(split(text)),
 							preview_image_url= igs(split(text)))
 			])
