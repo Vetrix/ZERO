@@ -1,5 +1,5 @@
 # ZERO
 
-zero bot, to help me do things up,
+zero offile line bot app, to help me do things up,
 
 give star as you like it (:
