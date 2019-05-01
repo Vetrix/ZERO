@@ -585,114 +585,132 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://kbbi.kemdikbud.go.id/ \n"
-								"command /kbbi {word}"))
+								"command /kbbi {word}\n"
+								"sample : /kbbi gim"))
 	
 	elif text == '/urban':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://www.urbandictionary.com/ \n"
-								"command /urban {word}"))
+								"command /urban {word}\n"
+								"sample : /urban 1437"))
 	
 	elif text == '/ox':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get meaning of a word from https://www.oxforddictionaries.com/ \n"
-								"command /ox {word}"))
+								"command /ox {word}\n"
+								"sample : /ox chatbot"))
 								
 	elif text == '/imdb':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get movie review from https://www.imdb.com/ \n"
-								"command /imdb {movie}"))
+								"command /imdb {movie}\n"
+								"sample : /imdb the godfather"))
 								
 	elif text == '/fdetect':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get face detection of photo url \n"
-								"command /fdetect {url}"))
+								"command /fdetect {url}\n"
+								"sample : /fdetect https://upload.wikimedia.org/wikipedia/commons/b/be/Pygoscelis_papua.jpg"))
 	
 	elif text == '/wolfram':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
 								"in simple text \n"
-								"command /wolfram {input}"))
+								"command /wolfram {input}\n"
+								"sample : /wolfram 1+1"))
 				
 	elif text == '/wolframs':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("use https://www.wolframalpha.com/ features, and give the result "
 								"in image \n"
-								"command /wolframs {input}"))
+								"command /wolframs {input}\n"
+								"sample : /wolframs 1+1"))
 	
 	elif text == '/yt':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get title, views, likes, etc. from youtube video url\n"
-								"command /yt {url}"))
+								"command /yt {url}\n"
+								"sample : /yt https://youtu.be/PHgc8Q6qTjc"))
 								
 	elif text == '/ytskip':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("skip youtube video to certain timestamp\n"
-								"command /ytskip t={time}, {url}"))
+								"command /ytskip t={time}, {url}\n"
+								"sample : /ytskip t=1m0s, https://youtu.be/PHgc8Q6qTjc"))
 	
 	elif text == '/stalkig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get simple description of instagram account and profile picture\n"
-								"command /stalkig {username}"))
+								"command /stalkig {username}\n"
+								"sample : /stalkig instagram"))
 				
 	elif text == '/photoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get photo and description of instagram post\n"
-								"command /photoig p{no.} {post link}"))
+								"command /photoig p{no.} {post link}\n"
+								"sample : /photoig p2 https://www.instagram.com/p/BwvIsCpgTr1/"))
 				
 	elif text == '/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get video and description of instagram post\n"
-								"command /videoig {post link}"))
+								"command /videoig {post link}\n"
+								"sample : /videoig https://www.instagram.com/p/Bv_72cIo1ow/"))
 	
 	elif text == '/twt':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get twitter status (tweet) from url\n"
-								"command /twt {url}"))
+								"command /twt {url}\n"
+								"sample : /twt https://twitter.com/elonmusk/status/1119414361984884737"))
 	
 	elif text == '/trans':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get translation from https://translate.google.com/ \n"
 								"language code can be seen in /lang command \n"
-								"command /trans sc={language code}, to={language code}, {text}"))
+								"command /trans sc={language code}, to={language code}, {text}\n"
+								"sample : /trans sc=en, to=id, ubiquitous"))
 				
 	elif text == '/tts':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get audio file about how a word pronounced in a language \n"
 								"language code can be seen in /lang command \n"
-								"command /tts la={language code}, {text}"))
+								"command /tts la={language code}, {text}\n"
+								"sample : /tts la=en, uh she up"))
 	
 	elif text == '/wiki':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get https://www.wikipedia.org/ description of something \n"
-								"command /wiki {text}"))
+								"command /wiki {text}\n"
+								"sample : /wiki penguin"))
 				
 	elif text == '/wikilang':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("change the language of wikipedia description \n"
 								"language code can be seen in /lang command \n"
-								"command /wikilang {language code}"))
+								"command /wikilang {language code}\n"
+								"sample : /wikilang id"))
 								
 	elif text == '/pt':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get prayer time of your city \n"
-								"command /pt {city}"))
+								"command /pt {city}\n"
+								"sample : /pt los angeles"))
 	
 	elif text == '/confirm':
 		confirm_template = ConfirmTemplate(text='Do it?', actions=[
