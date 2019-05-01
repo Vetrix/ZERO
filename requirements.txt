@@ -8,6 +8,6 @@ wikipedia
 gTTS==2.0.3
 gTTS-token==1.1.3
 IMDbPY==6.6
-youtube-dl
+youtube-dl==2019.04.30
 pafy==0.5.4
 tweepy
