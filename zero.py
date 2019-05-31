@@ -275,7 +275,8 @@ def handle_text_message(event):
 			query = query.split(' ', 1)[1]
 		
 		number = int(number)
-		number = number - 1
+		if number != 0 :
+			number = number -1
 		
 		url = query
 		r = requests.get(url)
@@ -515,6 +516,7 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("I will be here for you"))
+				
 	
 	elif text == '/leave':
 		if isinstance(event.source, SourceGroup):
@@ -580,6 +582,13 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("Save file off"))
+	
+	if text == '/echo':
+		line_bot_api.reply_message(
+				event.reply_token,
+				TextSendMessage("Copy the message you send\n"
+								"command /echo {word}\n"
+								"sample : /echo echo"))
 	
 	elif text == '/kbbi':
 		line_bot_api.reply_message(
