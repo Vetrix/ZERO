@@ -265,7 +265,7 @@ def handle_text_message(event):
 				dict1 = "no caption post."
 			try:
 				data4 = "@" + data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
-			except KeyError:
+			except (KeyError,TypeError):
 				data4 = "no location included."	
 				
 		count = len(str(dict1))
@@ -279,7 +279,7 @@ def handle_text_message(event):
 		
 		data3 = bs(dict1, "html.parser").text
 	
-		return(data2 + " : \n" + data3 + "\n@" + data4)
+		return(data2 + " : \n" + data3 + "\n" + data4)
 		
 	def picgs(query) :
 		number = 0
