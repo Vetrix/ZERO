@@ -248,6 +248,7 @@ def handle_text_message(event):
 			data = json.loads(jsondata)
 			try:
 				dict1 = data['caption']
+				data4 = data['contentLocation']['name']
 			except KeyError:
 				dict1 = "no caption post."
 
@@ -257,6 +258,7 @@ def handle_text_message(event):
 			data = json.loads(jsondata)
 			try:
 				dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_media_to_caption']['edges'][0]['node']['text']
+				data4 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
 			except KeyError:
 				dict1 = "no caption post."
 				
@@ -268,7 +270,10 @@ def handle_text_message(event):
 			dict1 = str(dict1) + "。。。 Caption trimmed."
 		
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
-		return(data2 + " : \n" + dict1)
+		
+		data3 = bs(dict1, "html.parser").text
+	
+		return(data2 + " : \n" + data3 + "\n@" + data4)
 		
 	def picgs(query) :
 		number = 0
