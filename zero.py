@@ -7,7 +7,7 @@ from kbbi import KBBI
 from urbandictionary_top import udtop
 from googletrans import Translator
 from flask import Flask, request, abort
-
+from bs4 import BeautifulSoup as bs
 
 from linebot import (
 	LineBotApi, WebhookHandler
