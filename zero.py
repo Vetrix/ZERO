@@ -297,13 +297,31 @@ def handle_text_message(event):
 			
 		return (dict1)
 	
-	def vigs(uri) :
-		url = uri
+	def vigs(query) :
+		number = 0
+		
+		if query[0:].lower().strip().startswith('p'):
+			number = query.split(' ', 1)[0]
+			number = number.split('v', 1)[-1]
+			query = query.split(' ', 1)[1]
+		
+		number = int(number)
+		if number != 0 :
+			number = number -1
+		
+		url = query
 		r = requests.get(url)
 		html = r.text
+		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
+		data = json.loads(jsondata)
 
-		data = html.split("""og:video" content=\"""")[1].split("\"")[0]
-		return (data)	
+		dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']
+		try:
+			dict1= dict1['edge_sidecar_to_children']['edges'][number]['node']['video_url']
+		except KeyError:
+			dict1= dict1['video_url']
+			
+		return (dict1)	
 	
 	def tts(word):
 		la ='en'
@@ -678,8 +696,8 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get video and description of instagram post\n"
-								"command /videoig {post link}\n"
-								"sample : /videoig https://www.instagram.com/p/Bv_72cIo1ow/"))
+								"command /videoig v{no.} {post link}\n"
+								"sample : /videoig https://www.instagram.com/p/BuwNBs_nLte/"))
 	
 	elif text == '/twt':
 		line_bot_api.reply_message(
