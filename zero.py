@@ -312,7 +312,7 @@ def handle_text_message(event):
 		
 		if query[0:].lower().strip().startswith('p'):
 			number = query.split(' ', 1)[0]
-			number = number.split('v', 1)[-1]
+			number = number.split('p', 1)[-1]
 			query = query.split(' ', 1)[1]
 		
 		number = int(number)
@@ -699,14 +699,14 @@ def handle_text_message(event):
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get photo and description of instagram post\n"
-								"command /photoig p{no.} {post link}\n"
+								"command /photoig p{page no.} {link}\n"
 								"sample : /photoig p2 https://www.instagram.com/p/BwvIsCpgTr1/"))
 				
 	elif text == '/videoig':
 		line_bot_api.reply_message(
 				event.reply_token,
 				TextSendMessage("get video and description of instagram post\n"
-								"command /videoig v{no.} {post link}\n"
+								"command /videoig p{page no.} {link}\n"
 								"sample : /videoig https://www.instagram.com/p/Bv_72cIo1ow/"))
 	
 	elif text == '/twt':
