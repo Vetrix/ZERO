@@ -261,7 +261,7 @@ def handle_text_message(event):
 				dict1 = "no caption post."
 			try:
 				data4 = "@" + data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
-			except KeyError:
+			except (TypeError, KeyError):
 				data4 = "no location included."	
 				
 		count = len(str(dict1))
