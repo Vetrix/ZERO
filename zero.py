@@ -248,9 +248,12 @@ def handle_text_message(event):
 			data = json.loads(jsondata)
 			try:
 				dict1 = data['caption']
-				data4 = data['contentLocation']['name']
 			except KeyError:
 				dict1 = "no caption post."
+			try:
+				data4 = "@" + data['contentLocation']['name']
+			except KeyError:
+				data4 = "no location included."	
 
 		except IndexError:
 			jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
@@ -258,9 +261,12 @@ def handle_text_message(event):
 			data = json.loads(jsondata)
 			try:
 				dict1 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_media_to_caption']['edges'][0]['node']['text']
-				data4 = data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
 			except KeyError:
 				dict1 = "no caption post."
+			try:
+				data4 = "@" + data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
+			except KeyError:
+				data4 = "no location included."	
 				
 		count = len(str(dict1))
 		if (count > 1900):
