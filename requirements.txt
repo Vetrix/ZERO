@@ -11,3 +11,4 @@ IMDbPY==6.6
 youtube-dl==2019.04.30
 pafy==0.5.4
 tweepy
+beautifulsoup4
