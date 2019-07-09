@@ -394,7 +394,7 @@ def handle_text_message(event):
 		oxdict_key = ('41b55bba54078e9fb9f587f1b978121f')
 		
 		word = quote(keyword)
-		url = ('https://od-api.oxforddictionaries.com:443/api/v1/entries/en/{}'.format(word))
+		url = ('https://od-api.oxforddictionaries.com:443/api/v2/entries/en/{}'.format(word))
 		req = requests.get(url, headers={'app_id': oxdict_appid, 'app_key': oxdict_key})
 		if "No entry available" in req.text:
 			return 'No entry available for "{}".'.format(word)
