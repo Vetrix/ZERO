@@ -390,8 +390,8 @@ def handle_text_message(event):
 		return (str(data['cover url']))
 	
 	def ox(keyword):
-		oxdict_appid = ('7dff6c56')
-		oxdict_key = ('41b55bba54078e9fb9f587f1b978121f')
+		oxdict_appid = ('c4390cc1')
+		oxdict_key = ('ebb4414c6c7e422dd7df459b48bd1529')
 		
 		word = quote(keyword)
 		url = ('https://od-api.oxforddictionaries.com:443/api/v2/entries/en/{}'.format(word))
