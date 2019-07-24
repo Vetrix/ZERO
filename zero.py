@@ -23,8 +23,9 @@ save_file = {}
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi('CQcg1+DqDmLr8bouXAsuoSm5vuwB2DzDXpWc/KGUlxzhq9MSWbk9gRFbanmFTbv9wwW8psPOrrg+mHtOkp1l+CTlqVeoUWwWfo54lNh16CcqH7wmQQHT+KnkNataGXez6nNY8YlahgO7piAAKqfjLgdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('c116ac1004040f97a62aa9c3503d52d9')
+line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
+handler = WebhookHandler('YOUR_CHANNEL_SECRET')
+## https://developers.line.biz/en/ your official account
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 	
@@ -126,10 +127,11 @@ def handle_text_message(event):
 	
 	def fdetect(url) :
 		http_url = 'https://api-us.faceplusplus.com/facepp/v3/detect'
-		key = "lM4feUDrJJYyKm8s4WvmxgWlVpZE0iNw"
-		secret = "Y5L_l2a87UAtKeFzL-FD8K3C5OwtAbfA"
+		key = "YOUR_FACE++_KEY"
+		secret = "YOUR_FACE++_SECRET"
 		attributes="age,gender,ethnicity,beauty"
 		
+		##more info of thr api on https://api-us.faceplusplus.com
 		#add emotion later in atributes
 		
 		resp = requests.post(http_url,
@@ -188,11 +190,13 @@ def handle_text_message(event):
 		query = query.split('/', 5)[-1]
 		query = query.split('/')[0]
 		
-		access_token = ('1084471906248445952-3aN04mwGh4Y3VKUXFVV1YIfiC6WPVB')
-		access_token_secret = ('XsRaIf04Te3AldW5mRFz1kgaT1ZyyXWNaDOlK1GKivDUE')
-		consumer_key = ('u1CBf3TrAu1BDp7qsAH2GbSwl')
-		consumer_secret = ('P2vMIp4vSuM7Q1PdscyjAE8eMcoROCIBY5mZ4H5WHQXPxWbcwy')
+		access_token = ('YOUR_TWITTER_API_ACCESS_TOKEN')
+		access_token_secret = ('YOUR_TWITTER_API_ACCESS_TOKEN_SECRET')
+		consumer_key = ('YOUR_TWITTER_API_CONSUMER_KEY')
+		consumer_secret = ('YOUR_TWITTER_API_CONSUMER_SECRET')
 		
+	##more info of thr api on https://developer.twitter.com
+	
 		auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 		auth.set_access_token(access_token, access_token_secret)
 
@@ -261,7 +265,7 @@ def handle_text_message(event):
 				dict1 = "no caption post."
 			try:
 				data4 = "@" + data['entry_data']['PostPage'][0]['graphql']['shortcode_media']['location']['name']
-			except (TypeError, KeyError):
+			except (KeyError,TypeError):
 				data4 = "no location included."	
 				
 		count = len(str(dict1))
@@ -305,7 +309,7 @@ def handle_text_message(event):
 			
 		return (dict1)
 	
-	def vigs(query) :
+	def vigs(uri) :
 		number = 0
 		
 		if query[0:].lower().strip().startswith('p'):
@@ -329,7 +333,7 @@ def handle_text_message(event):
 		except KeyError:
 			dict1= dict1['video_url']
 			
-		return (dict1)	
+		return (dict1)		
 	
 	def tts(word):
 		la ='en'
@@ -392,9 +396,9 @@ def handle_text_message(event):
 		return (str(data['cover url']))
 	
 	def ox(keyword):
-		oxdict_appid = ('c4390cc1')
-		oxdict_key = ('ebb4414c6c7e422dd7df459b48bd1529')
-		
+		oxdict_appid = ('YOUR_OXFORDDICTIONARIES_APPID')
+		oxdict_key = ('YOUR_OXFORDDICTIONARIES_KEY')
+	##more info of thr api on https://od-api.oxforddictionaries.com
 		word = quote(keyword)
 		url = ('https://od-api.oxforddictionaries.com:443/api/v2/entries/en/{}'.format(word))
 		req = requests.get(url, headers={'app_id': oxdict_appid, 'app_key': oxdict_key})
@@ -424,13 +428,13 @@ def handle_text_message(event):
 
 	
 	def wolfram(query):
-		wolfram_appid = ('83L4JP-TWUV8VV7J7')
+		wolfram_appid = ('YOUR_WOLFRAMALPHA_APPID')
 
 		url = 'https://api.wolframalpha.com/v2/result?i={}&appid={}'
 		return requests.get(url.format(quote(query), wolfram_appid)).text
 		
 	def wolframs(query):
-		wolfram_appid = ('83L4JP-TWUV8VV7J7')
+		wolfram_appid = ('YOUR_WOLFRAMALPHA_APPID')
 
 		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
 		return url.format(quote(query), wolfram_appid)
@@ -705,7 +709,7 @@ def handle_text_message(event):
 				event.reply_token,
 				TextSendMessage("get video and description of instagram post\n"
 								"command /videoig p{page no.} {link}\n"
-								"sample : /videoig p2 https://www.instagram.com/p/BuwNBs_nLte/"))
+								"sample : /videoig https://www.instagram.com/p/Bv_72cIo1ow/"))
 	
 	elif text == '/twt':
 		line_bot_api.reply_message(
