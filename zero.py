@@ -273,8 +273,10 @@ def handle_text_message(event):
 		
 		data2 = html.split("""og:title" content=\"""")[1].split(":")[0]
 		
+		data2 = bs(data2, "html.parser").text
 		data3 = bs(dict1, "html.parser").text
-	
+		data4 = bs(data4, "html.parser").text
+		
 		return(data2 + " : \n" + data3 + "\n" + data4)
 		
 	def picgs(query) :
