@@ -1,5 +1,5 @@
 flask==1.1.1
-line-bot-sdk==1.8.0
+line-bot-sdk==1.13.0
 kbbi==0.2.1
 urbandictionary_top
 argparse
