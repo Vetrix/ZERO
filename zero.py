@@ -1169,4 +1169,4 @@ def handle_beacon(event):
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
 	make_static_tmp_dir()
-	app.run(host='0.0.0.0', port=port)
+	app.run(host='0.0.0.0', port=port, debug=True)
