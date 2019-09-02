@@ -232,11 +232,18 @@ def handle_text_message(event):
 		r = requests.get(url.format(username))
 		html = r.text
 		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+			
+		try:
+			data = json.loads(jsondata)
+			dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-		data = json.loads(jsondata)
-		dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
-
-		return (dict1['profile_pic_url_hd'])
+			return (dict1['profile_pic_url_hd'])
+		except KeyError:
+			try:
+				data = html.split("""og:image" content=\"""")[1].split("""" />""")[0]
+				return (data)
+			except IndexError:
+				return ("Unavailable")
 		
 	def picg(uri) :
 		url = split(uri)
