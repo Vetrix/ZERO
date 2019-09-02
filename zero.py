@@ -207,18 +207,18 @@ def handle_text_message(event):
 		r = requests.get(url.format(username))
 		if r.status_code == 404:
 			return ("Unavailable")
-			
-            html = r.text
+		html = r.text
+		
 		try:
-            jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+			jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
 
-            data = json.loads(jsondata)
-            dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
+			data = json.loads(jsondata)
+			dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-            return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
-                    "Following : " + str(dict1['edge_follow']['count']) + "\n" +
-                    "Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
-                    "Bio : " + dict1['biography'])
+			return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
+					"Following : " + str(dict1['edge_follow']['count']) + "\n" +
+					"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
+					"Bio : " + dict1['biography'])
 		except KeyError:
 			data = html.split("""og:description" content=\"""")[1].split("""" />""")[0]
 			data = bs(data, "html.parser").text
