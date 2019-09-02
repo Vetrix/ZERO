@@ -243,7 +243,7 @@ def handle_text_message(event):
 				data = html.split("""og:image" content=\"""")[1].split("""" />""")[0]
 				return (data)
 			except IndexError:
-				return ("Unavailable")
+				return ("https://cdn.frankerfacez.com/emoticon/231552/4")
 		
 	def picg(uri) :
 		url = split(uri)
