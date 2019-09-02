@@ -208,17 +208,17 @@ def handle_text_message(event):
 		if r.status_code == 404:
 			return ("Unavailable")
 		html = r.text
+		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+		data = json.loads(jsondata)
 		
 		try:
-			jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
-
-			data = json.loads(jsondata)
 			dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
 			return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
 					"Following : " + str(dict1['edge_follow']['count']) + "\n" +
 					"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
 					"Bio : " + dict1['biography'])
+					
 		except KeyError:
 			try:
 				data = html.split("""og:description" content=\"""")[1].split("""" />""")[0]
@@ -1169,4 +1169,4 @@ def handle_beacon(event):
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
 	make_static_tmp_dir()
-	app.run(host='0.0.0.0', port=port, debug=True)
+	app.run(host='0.0.0.0', port=port)
