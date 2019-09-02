@@ -220,9 +220,12 @@ def handle_text_message(event):
 					"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
 					"Bio : " + dict1['biography'])
 		except KeyError:
-			data = html.split("""og:description" content=\"""")[1].split("""" />""")[0]
-			data = bs(data, "html.parser").text
-			return (data)
+			try:
+				data = html.split("""og:description" content=\"""")[1].split("""" />""")[0]
+				data = bs(data, "html.parser").text
+				return (data)
+			except IndexError:
+				return ("Unavailable")
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
