@@ -210,12 +210,13 @@ def handle_text_message(event):
 		html = r.text
 		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 		data = json.loads(jsondata)
-	
-		dict1 = data['entry_data']
-		dict1 = dict1[:1900]
-			
-
-		return (dict1)
+		
+		dict1 = data['entry_data']['ProfilePage']
+		
+		a = json.dumps(dict1)
+		dict1 = a[:1900]
+		
+		return (a)
 
 		
 	def igs(username) :
