@@ -210,9 +210,16 @@ def handle_text_message(event):
 		html = r.text
 		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 		data = json.loads(jsondata)
+	
+		dict1 = data['entry_data']
+		
+		count = len(str(dict1))
+		if (count > 1900):
+			dict1 = dict1[:1900]
+			if not dict1.endswith(' '):
+				dict1 = dict1[:dict1.rfind(' ')+1]
 
-
-		return (data['entry_data'])
+		return (dict1)
 
 		
 	def igs(username) :
