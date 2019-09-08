@@ -208,7 +208,7 @@ def handle_text_message(event):
 		if r.status_code == 404:
 			return ("Unavailable")
 		html = r.text
-		jsondata = html.split("window._sharedData = ")[1].split(";</script>")[0]
+		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 		data = json.loads(jsondata)
 		
 		try:
