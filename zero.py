@@ -210,22 +210,10 @@ def handle_text_message(event):
 		html = r.text
 		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 		data = json.loads(jsondata)
-		
-		try:
-			dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-			return ("User : @"+ dict1['username'] + "\n" + "Name : " + dict1['full_name'] + "\n" + 
-					"Following : " + str(dict1['edge_follow']['count']) + "\n" +
-					"Followers : " + str(dict1['edge_followed_by']['count']) + "\n" +
-					"Bio : " + dict1['biography'])
-					
-		except KeyError:
-			try:
-				data = html.split("""og:description" content=\"""")[1].split("""" />""")[0]
-				data = bs(data, "html.parser").text
-				return (data)
-			except IndexError:
-				return ("Unavailable")
+
+		return (data['entry_data'])
+
 		
 	def igs(username) :
 		url = "https://www.instagram.com/{}"
@@ -233,11 +221,17 @@ def handle_text_message(event):
 		html = r.text
 		jsondata = html.split("""<script type="text/javascript">window._sharedData =""")[1].split(";</script>")[0]
 			
+		try:
+			data = json.loads(jsondata)
+			dict1 = data['entry_data']['ProfilePage'][0]['graphql']['user']
 
-		data = json.loads(jsondata)
-
-		return (dict1['profile_pic_url_hd'])
-
+			return (dict1['profile_pic_url_hd'])
+		except KeyError:
+			try:
+				data = html.split("""og:image" content=\"""")[1].split("""" />""")[0]
+				return (data)
+			except IndexError:
+				return ("https://cdn.frankerfacez.com/emoticon/231552/4")
 		
 	def picg(uri) :
 		url = split(uri)
