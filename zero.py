@@ -212,12 +212,8 @@ def handle_text_message(event):
 		data = json.loads(jsondata)
 	
 		dict1 = data['entry_data']
-		
-		count = len(str(dict1))
-		if (count > 1900):
-			dict1 = dict1[:1900]
-			if not dict1.endswith(' '):
-				dict1 = dict1[:dict1.rfind(' ')+1]
+		dict1 = dict1[:1900]
+			
 
 		return (dict1)
 
