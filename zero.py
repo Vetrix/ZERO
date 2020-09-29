@@ -972,10 +972,11 @@ def handle_text_message(event):
 			
 	elif text[0:].lower().strip().startswith('/wolframs '):
 		line_bot_api.reply_message(
-			event.reply_token,
-			TextSendMessage(str(wolframs(split(text)))),
+			event.reply_token,[
+			TextSendMessage(wolframs(split(text))),
 			ImageSendMessage(original_content_url= wolframs(split(text)),
-								preview_image_url= wolframs(split(text))))
+								preview_image_url= wolframs(split(text)))
+			])
 
 	elif text[0:].lower().strip().startswith('/kbbi '):
 		line_bot_api.reply_message(
