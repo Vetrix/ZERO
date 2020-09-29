@@ -448,7 +448,7 @@ def handle_text_message(event):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
-		return url.format(quote(query), wolfram_appid)
+		return url.format(quote(query), wolfram_appid).text
 	
 	def ytskip(query):
 		time = '0s'
