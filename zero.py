@@ -448,7 +448,7 @@ def handle_text_message(event):
 		wolfram_appid = ('83L4JP-TWUV8VV7J7')
 
 		url = 'https://api.wolframalpha.com/v2/simple?i={}&appid={}'
-		return url.format(quote(query), wolfram_appid).text
+		return url.format(quote(query), wolfram_appid)
 	
 	def ytskip(query):
 		time = '0s'
@@ -973,7 +973,7 @@ def handle_text_message(event):
 	elif text[0:].lower().strip().startswith('/wolframs '):
 		line_bot_api.reply_message(
 			event.reply_token,
-			TextSendMessage(wolframs(split(text))),
+			TextSendMessage(str(wolframs(split(text)))),
 			ImageSendMessage(original_content_url= wolframs(split(text)),
 								preview_image_url= wolframs(split(text))))
 
